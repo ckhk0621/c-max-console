@@ -30,4 +30,5 @@ export default buildConfig({
   }),
   cors: [process.env.PAYLOAD_PUBLIC_SITE_URL],
   cookiePrefix: 'c-max',
+  csrf: [process.env.CSRF_URL],
 })
