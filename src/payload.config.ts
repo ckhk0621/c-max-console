@@ -19,6 +19,7 @@ export default buildConfig({
   collections: [Users, Categories],
   typescript: {
     outputFile: path.resolve(__dirname, 'payload-types.ts'),
+    declare: false
   },
   graphQL: {
     schemaOutputFile: path.resolve(__dirname, 'generated-schema.graphql'),
@@ -27,4 +28,5 @@ export default buildConfig({
   db: mongooseAdapter({
     url: process.env.DATABASE_URI,
   }),
+  cors: [process.env.PAYLOAD_PUBLIC_SITE_URL],
 })
