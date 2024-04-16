@@ -29,4 +29,5 @@ export default buildConfig({
     url: process.env.DATABASE_URI,
   }),
   cors: [process.env.PAYLOAD_PUBLIC_SITE_URL],
+  cookiePrefix: 'c-max',
 })
