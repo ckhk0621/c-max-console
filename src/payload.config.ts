@@ -52,19 +52,10 @@ export default buildConfig({
     cloudStorage({
       collections: {
         media: {
-          // adapter: s3Adapter({
-          //   bucket: "timable-uat-public-test",
-          //   config: {
-          //     credentials: {
-          //       accessKeyId: "AKIA6FFQ5YWWQG746OEF",
-          //       secretAccessKey: "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",
-          //     },
-          //     region: "ap-southeast-1",
-          //   },
-          // }),
           adapter: s3Adapter({
-            bucket: "c-max-bucket",
+            bucket: process.env.S3_BUCKET_NAME,
             config: {
+              // endpoint: "https://c-max-bucket.s3.ap-east-1.amazonaws.com",
               credentials: {
                 accessKeyId: "AKIA4HWDFA76EGIL3MMU",
                 secretAccessKey: "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",
@@ -72,7 +63,7 @@ export default buildConfig({
               region: "ap-east-1",
             },
           }),
-          disablePayloadAccessControl: true,
+          // disablePayloadAccessControl: true,
         },
       },
     })

@@ -113,14 +113,12 @@ const Setting: GlobalConfig = {
               type: "array",
               fields: [
                 {
-                  name: "level1Name",
-                  label: "level 1",
+                  name: "title",
                   type: "text",
                   localized: true,
                 },
                 {
-                  label: "permalink",
-                  name: "permalink",
+                  name: "slug",
                   type: "text",
                   unique: true,
                 },
