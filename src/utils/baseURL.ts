@@ -1,0 +1,1 @@
+export const baseUrl = process.env.PAYLOAD_PUBLIC_SERVER_URL

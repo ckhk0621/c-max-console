@@ -9,7 +9,7 @@ import { protectRoles } from '../hooks/protectRoles'
 const Users: CollectionConfig = {
   slug: 'users',
   auth: {
-    tokenExpiration: 28800, // 8 hours
+    tokenExpiration: 86400, // 24 hours
     cookies: {
       sameSite: 'none',
       secure: true,
@@ -20,7 +20,7 @@ const Users: CollectionConfig = {
     useAsTitle: 'email',
   },
   access: {
-    read: adminsAndUser,
+    read: ()=> true,
     create: anyone,
     update: adminsAndUser,
     delete: admins,
@@ -40,9 +40,9 @@ const Users: CollectionConfig = {
       type: 'select',
       hasMany: true,
       saveToJWT: true,
-      hooks: {
-        beforeChange: [protectRoles],
-      },
+      // hooks: {
+      //   beforeChange: [protectRoles],
+      // },
       options: [
         {
           label: 'Admin',
