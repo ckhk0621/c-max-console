@@ -25,17 +25,17 @@ const Setting: GlobalConfig = {
               localized: true,
             },
             {
+              label: "description",
+              name: "description",
+              type: "textarea",
+              localized: true,
+            },
+            {
               name: "logo",
               label: "logo",
               type: "upload",
               relationTo: "media",
             },
-            // {
-            //   name: "logoMobile",
-            //   label: "logoMobile",
-            //   type: "upload",
-            //   relationTo: "media",
-            // },
           ],
         },
         {
@@ -250,6 +250,42 @@ const Setting: GlobalConfig = {
                 //     }),
                 //   ],
                 // },
+              ],
+            },
+          ],
+        },
+        {
+          name: "footer",
+          fields: [
+            {
+              name: "copyright",
+              type: "text",
+              localized: true,
+            },
+            {
+              name: "address",
+              type: "textarea",
+              localized: true,
+            },
+            {
+              name: "links",
+              type: "array",
+              fields: [
+                {
+                  name: "title",
+                  type: "text",
+                  localized: true,
+                },
+                {
+                  name: "slug",
+                  type: "text",
+                },
+                {
+                  label: "external",
+                  name: "external",
+                  type: "checkbox",
+                  defaultValue: false,
+                },
               ],
             },
           ],

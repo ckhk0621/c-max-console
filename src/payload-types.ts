@@ -11,10 +11,13 @@ export interface Config {
     users: User;
     categories: Category;
     media: Media;
+    pages: Page;
+    blocks: Block;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
   globals: {
+    home: Home;
     settings: Setting;
   };
 }
@@ -85,6 +88,32 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pages".
+ */
+export interface Page {
+  id: string;
+  title: string;
+  slug: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "blocks".
+ */
+export interface Block {
+  id: string;
+  type?: 'email' | null;
+  title?: string | null;
+  content: {
+    [k: string]: unknown;
+  }[];
+  email?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-preferences".
  */
 export interface PayloadPreference {
@@ -119,12 +148,83 @@ export interface PayloadMigration {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "home".
+ */
+export interface Home {
+  id: string;
+  content: {
+    layout?:
+      | (
+          | {
+              image: string | Media;
+              title?: string | null;
+              id?: string | null;
+              blockName?: string | null;
+              blockType: 'banner';
+            }
+          | {
+              title?: string | null;
+              content?:
+                | {
+                    [k: string]: unknown;
+                  }[]
+                | null;
+              link?: (string | null) | Page;
+              id?: string | null;
+              blockName?: string | null;
+              blockType: 'introduction';
+            }
+          | {
+              subTitle?: string | null;
+              title?: string | null;
+              list?:
+                | {
+                    title?: string | null;
+                    link?: (string | null) | Page;
+                    description?:
+                      | {
+                          [k: string]: unknown;
+                        }[]
+                      | null;
+                    image?: string | Media | null;
+                    id?: string | null;
+                  }[]
+                | null;
+              id?: string | null;
+              blockName?: string | null;
+              blockType: 'listContent';
+            }
+          | {
+              title?: string | null;
+              content?:
+                | {
+                    [k: string]: unknown;
+                  }[]
+                | null;
+              button?: string | null;
+              link?: (string | null) | Page;
+              id?: string | null;
+              blockName?: string | null;
+              blockType: 'promotion';
+            }
+        )[]
+      | null;
+  };
+  seo: {
+    title?: string | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "settings".
  */
 export interface Setting {
   id: string;
   website: {
     name?: string | null;
+    description?: string | null;
     logo?: string | Media | null;
   };
   socials: {
@@ -137,6 +237,18 @@ export interface Setting {
   };
   menu: {
     nestedNavigation?:
+      | {
+          title?: string | null;
+          slug?: string | null;
+          external?: boolean | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  footer: {
+    copyright?: string | null;
+    address?: string | null;
+    links?:
       | {
           title?: string | null;
           slug?: string | null;
