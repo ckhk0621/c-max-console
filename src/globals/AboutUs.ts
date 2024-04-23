@@ -3,9 +3,11 @@ import BannerBlock from "../blocks/banner";
 import IntroductionBlock from "../blocks/introduction";
 import ListContentBlock from "../blocks/listContent";
 import PromotionBlock from "../blocks/promotion";
+import ParagraphBlock from "../blocks/paragraph";
+import ListImagesBlock from "../blocks/listImages";
 
-const Home: GlobalConfig = {
-  slug: "home",
+const AboutUs: GlobalConfig = {
+  slug: "AboutUs",
   admin: {
     group: "Pages",
   },
@@ -27,7 +29,9 @@ const Home: GlobalConfig = {
                 BannerBlock,
                 IntroductionBlock,
                 ListContentBlock,
-                PromotionBlock
+                PromotionBlock,
+                ParagraphBlock,
+                ListImagesBlock
               ],
               localized: true,
             },
@@ -49,4 +53,4 @@ const Home: GlobalConfig = {
   ],
 };
 
-export default Home;
+export default AboutUs;

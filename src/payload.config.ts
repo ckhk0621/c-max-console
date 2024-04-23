@@ -11,9 +11,11 @@ import Users from './collections/Users'
 import Media from './collections/Media';
 import Pages from './collections/Pages'
 import Blocks from './collections/Blocks'
+import Products from './collections/Products'
 
 import Settings from './globals/Settings';
 import Home from './globals/Home';
+import AboutUs from './globals/AboutUs'
 
 import { cloudStorage } from '@payloadcms/plugin-cloud-storage';
 import { s3Adapter } from '@payloadcms/plugin-cloud-storage/s3';
@@ -24,9 +26,10 @@ export default buildConfig({
     bundler: webpackBundler(),
   },
   editor: slateEditor({}),
-  collections: [Users, Categories, Media, Pages, Blocks],
+  collections: [Users, Categories, Media, Pages, Products, Blocks],
   globals: [
     Home,
+    AboutUs,
     Settings,
   ],
   typescript: {

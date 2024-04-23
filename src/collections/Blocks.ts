@@ -19,6 +19,7 @@ const Blocks: CollectionConfig = {
           value: "email",
         },
       ],
+      unique: true,
     },
     {
       name: "title",

@@ -12,12 +12,14 @@ export interface Config {
     categories: Category;
     media: Media;
     pages: Page;
+    products: Product;
     blocks: Block;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
   globals: {
     home: Home;
+    AboutUs: AboutUs;
     settings: Setting;
   };
 }
@@ -48,6 +50,7 @@ export interface User {
 export interface Category {
   id: string;
   title?: string | null;
+  value?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -94,6 +97,25 @@ export interface Page {
   id: string;
   title: string;
   slug: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "products".
+ */
+export interface Product {
+  id: string;
+  category?: (string | Category)[] | null;
+  type?: 'product' | null;
+  title?: string | null;
+  slug?: string | null;
+  thumbnail?: string | Media | null;
+  content?:
+    | {
+        [k: string]: unknown;
+      }[]
+    | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -206,6 +228,99 @@ export interface Home {
               id?: string | null;
               blockName?: string | null;
               blockType: 'promotion';
+            }
+        )[]
+      | null;
+  };
+  seo: {
+    title?: string | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AboutUs".
+ */
+export interface AboutUs {
+  id: string;
+  content: {
+    layout?:
+      | (
+          | {
+              image: string | Media;
+              title?: string | null;
+              id?: string | null;
+              blockName?: string | null;
+              blockType: 'banner';
+            }
+          | {
+              title?: string | null;
+              content?:
+                | {
+                    [k: string]: unknown;
+                  }[]
+                | null;
+              link?: (string | null) | Page;
+              id?: string | null;
+              blockName?: string | null;
+              blockType: 'introduction';
+            }
+          | {
+              subTitle?: string | null;
+              title?: string | null;
+              list?:
+                | {
+                    title?: string | null;
+                    link?: (string | null) | Page;
+                    description?:
+                      | {
+                          [k: string]: unknown;
+                        }[]
+                      | null;
+                    image?: string | Media | null;
+                    id?: string | null;
+                  }[]
+                | null;
+              id?: string | null;
+              blockName?: string | null;
+              blockType: 'listContent';
+            }
+          | {
+              title?: string | null;
+              content?:
+                | {
+                    [k: string]: unknown;
+                  }[]
+                | null;
+              button?: string | null;
+              link?: (string | null) | Page;
+              id?: string | null;
+              blockName?: string | null;
+              blockType: 'promotion';
+            }
+          | {
+              title?: string | null;
+              content?:
+                | {
+                    [k: string]: unknown;
+                  }[]
+                | null;
+              id?: string | null;
+              blockName?: string | null;
+              blockType: 'paragraph';
+            }
+          | {
+              title?: string | null;
+              images?:
+                | {
+                    image: string | Media;
+                    id?: string | null;
+                  }[]
+                | null;
+              id?: string | null;
+              blockName?: string | null;
+              blockType: 'listImages';
             }
         )[]
       | null;
