@@ -1,11 +1,11 @@
 import { GlobalConfig } from "payload/types";
-import BannerBlock from "../blocks/banner";
 import ParagraphBlock from "../blocks/paragraph";
 import ListImagesBlock from "../blocks/listImages";
-import ListContentBlock from "../blocks/listContent";
+import TestimonialsBlock from "../blocks/testimonials";
+import ListSupportBlock from "../blocks/listSupport";
 
-const AboutUs: GlobalConfig = {
-  slug: "AboutUs",
+const ShowcasePage: GlobalConfig = {
+  slug: "ShowcasePage",
   admin: {
     group: "Pages",
   },
@@ -24,10 +24,10 @@ const AboutUs: GlobalConfig = {
               name: "layout",
               type: "blocks",
               blocks: [
-                BannerBlock,
                 ParagraphBlock,
                 ListImagesBlock,
-                ListContentBlock
+                TestimonialsBlock,
+                ListSupportBlock
               ],
               localized: true,
             },
@@ -60,4 +60,4 @@ const AboutUs: GlobalConfig = {
   ],
 };
 
-export default AboutUs;
+export default ShowcasePage;

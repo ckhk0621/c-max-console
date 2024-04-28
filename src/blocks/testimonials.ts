@@ -4,13 +4,27 @@ const TestimonialsBlock: Block = {
   slug: "testimonials",
   fields: [
     {
-      name: "client",
+      name: "subTitle",
       type: "text",
     },
     {
-      name: "content",
-      type: "richText"
+      name: "title",
+      type: "text",
     },
+    {
+      name: "list",
+      type: "array",
+      fields: [
+        {
+          name: "name",
+          type: "text",
+        },
+        {
+          name: "content",
+          type: "richText"
+        }
+      ]
+    }
   ],
 };
 

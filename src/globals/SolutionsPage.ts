@@ -1,11 +1,7 @@
 import { GlobalConfig } from "payload/types";
-import BannerBlock from "../blocks/banner";
-import ParagraphBlock from "../blocks/paragraph";
-import ListImagesBlock from "../blocks/listImages";
-import ListContentBlock from "../blocks/listContent";
 
-const AboutUs: GlobalConfig = {
-  slug: "AboutUs",
+const SolutionsPage: GlobalConfig = {
+  slug: "solutionsPage",
   admin: {
     group: "Pages",
   },
@@ -21,16 +17,20 @@ const AboutUs: GlobalConfig = {
           label: "CONTENT",
           fields: [
             {
-              name: "layout",
-              type: "blocks",
-              blocks: [
-                BannerBlock,
-                ParagraphBlock,
-                ListImagesBlock,
-                ListContentBlock
-              ],
+              name: "title",
+              type: "text",
               localized: true,
             },
+            {
+              name: "content",
+              type: "richText",
+              localized: true,
+            },
+            {
+              name: "file",
+              type: "relationship",
+              relationTo: "media",
+            }
           ],
         },
         {
@@ -60,4 +60,4 @@ const AboutUs: GlobalConfig = {
   ],
 };
 
-export default AboutUs;
+export default SolutionsPage;

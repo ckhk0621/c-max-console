@@ -9,6 +9,7 @@ const Categories: CollectionConfig = {
   admin: {
     useAsTitle: 'title',
   },
+  slug: 'categories',
   fields: [
     {
       name: 'title',
@@ -18,9 +19,22 @@ const Categories: CollectionConfig = {
     {
       name: 'value',
       type: 'text',
-    },
+      admin: {
+        readOnly: true,
+      },
+      hooks: {
+        beforeChange: [
+          ({ siblingData }) => {
+            const value = siblingData.title
+              .toLowerCase()
+              .replace(/ /g, "-")
+              .replace(/[^\w-]+/g, "");
+            return value;
+          },
+        ],
+      },
+    }
   ],
-  slug: 'categories',
 }
 
 export default Categories

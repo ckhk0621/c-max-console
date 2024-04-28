@@ -3,6 +3,9 @@ import BannerBlock from "../blocks/banner";
 import IntroductionBlock from "../blocks/introduction";
 import ListContentBlock from "../blocks/listContent";
 import PromotionBlock from "../blocks/promotion";
+import TwoColumnContentBlock from "../blocks/twoColumnContent";
+import TestimonialsBlock from "../blocks/testimonials";
+import HorizontalListImagesBlock from "../blocks/horizontalListImages";
 
 const Home: GlobalConfig = {
   slug: "home",
@@ -27,7 +30,10 @@ const Home: GlobalConfig = {
                 BannerBlock,
                 IntroductionBlock,
                 ListContentBlock,
-                PromotionBlock
+                PromotionBlock,
+                TwoColumnContentBlock,
+                TestimonialsBlock,
+                HorizontalListImagesBlock
               ],
               localized: true,
             },
@@ -41,6 +47,17 @@ const Home: GlobalConfig = {
               name: "title",
               type: "text",
               localized: true,
+            },
+          ],
+        },
+        {
+          name: "others",
+          label: "Others",
+          fields: [
+            {
+              name: "displayNewsletter",
+              type: "checkbox",
+              defaultValue: false,
             },
           ],
         },

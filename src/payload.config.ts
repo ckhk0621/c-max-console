@@ -12,10 +12,17 @@ import Media from './collections/Media';
 import Pages from './collections/Pages'
 import Blocks from './collections/Blocks'
 import Products from './collections/Products'
+import Solutions from './collections/Solutions'
+import News from './collections/News'
 
 import Settings from './globals/Settings';
 import Home from './globals/Home';
 import AboutUs from './globals/AboutUs'
+import ProductsPage from './globals/ProductsPage'
+import SolutionsPage from './globals/SolutionsPage'
+import ContactPage from './globals/ContactPage'
+import ShowcasePage from './globals/ShowcasePage'
+import NewsPage from './globals/NewsPage'
 
 import { cloudStorage } from '@payloadcms/plugin-cloud-storage';
 import { s3Adapter } from '@payloadcms/plugin-cloud-storage/s3';
@@ -26,11 +33,16 @@ export default buildConfig({
     bundler: webpackBundler(),
   },
   editor: slateEditor({}),
-  collections: [Users, Categories, Media, Pages, Products, Blocks],
+  collections: [Users, Categories, Media, Pages, Products, Solutions, News, Blocks],
   globals: [
     Home,
     AboutUs,
+    ProductsPage,
+    SolutionsPage,
+    ShowcasePage,
+    ContactPage,
     Settings,
+    NewsPage
   ],
   typescript: {
     outputFile: path.resolve(__dirname, 'payload-types.ts'),

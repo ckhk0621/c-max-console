@@ -291,6 +291,17 @@ const Setting: GlobalConfig = {
           ],
         },
         {
+          name: "options",
+          fields: [
+            {
+              name: "categories",
+              type: "relationship",
+              relationTo: "categories",
+              hasMany: true,
+            }
+          ]
+        },
+        {
           name: "others",
           label: "Others", // required
           fields: [
