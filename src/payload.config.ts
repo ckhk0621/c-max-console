@@ -37,9 +37,6 @@ export default buildConfig({
     user: Users.slug,
     components: {
       afterLogin: [AfterLogin],
-      // views: {
-      //   Dashboard: CustomDashboard,
-      // },
     },
     bundler: webpackBundler(),
   },
@@ -108,9 +105,9 @@ export default buildConfig({
   db: mongooseAdapter({
     url: process.env.DATABASE_URI,
   }),
-  cors: "*",
-  // csrf: [process.env.PAYLOAD_PUBLIC_SERVER_URL],
-  cookiePrefix: 'c-max',
+  // cors: [process.env.PAYLOAD_PUBLIC_SITE_URL],
+  // csrf: [process.env.PAYLOAD_PUBLIC_SITE_URL],
+  // cookiePrefix: 'c-max',
   localization: {
     locales: ['en', 'cn', 'zh', 'jp'],
     defaultLocale: 'en',

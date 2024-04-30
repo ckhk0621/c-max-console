@@ -8,14 +8,15 @@ import { protectRoles } from '../hooks/protectRoles'
 
 const Users: CollectionConfig = {
   slug: 'users',
-  auth: {
-    tokenExpiration: 86400, // 24 hours
-    cookies: {
-      sameSite: 'none',
-      secure: true,
-      domain: process.env.COOKIE_DOMAIN,
-    },
-  },
+  auth: true,
+  // auth: {
+  //   tokenExpiration: 86400, // 24 hours
+  //   cookies: {
+  //     sameSite: 'none',
+  //     secure: true,
+  //     domain: process.env.COOKIE_DOMAIN,
+  //   },
+  // },
   admin: {
     useAsTitle: 'email',
   },
