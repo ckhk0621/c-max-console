@@ -28,13 +28,19 @@ import ShowcasePage from './globals/ShowcasePage'
 import NewsPage from './globals/NewsPage'
 import TeamsPage from './globals/TeamsPage'
 import ServicesPage from './globals/ServicesPage'
-
+import AfterLogin from "./components/AfterLogin";
 import { cloudStorage } from '@payloadcms/plugin-cloud-storage';
 import { s3Adapter } from '@payloadcms/plugin-cloud-storage/s3';
 
 export default buildConfig({
   admin: {
     user: Users.slug,
+    components: {
+      afterLogin: [AfterLogin],
+      // views: {
+      //   Dashboard: CustomDashboard,
+      // },
+    },
     bundler: webpackBundler(),
   },
   editor: slateEditor({}),
@@ -102,9 +108,9 @@ export default buildConfig({
   db: mongooseAdapter({
     url: process.env.DATABASE_URI,
   }),
-  cors: [process.env.PAYLOAD_PUBLIC_SITE_URL],
+  cors: "*",
+  // csrf: [process.env.PAYLOAD_PUBLIC_SERVER_URL],
   cookiePrefix: 'c-max',
-  ...(process.env.CSRF_URL ? { csrf: [process.env.CSRF_URL] } : {}),
   localization: {
     locales: ['en', 'cn', 'zh', 'jp'],
     defaultLocale: 'en',
