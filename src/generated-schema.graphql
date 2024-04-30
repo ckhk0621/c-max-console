@@ -25,6 +25,15 @@ type Query {
   Block(id: String!, draft: Boolean, fallbackLocale: FallbackLocaleInputType, locale: LocaleInputType): Block
   Blocks(draft: Boolean, where: Block_where, fallbackLocale: FallbackLocaleInputType, locale: LocaleInputType, limit: Int, page: Int, sort: String): Blocks
   docAccessBlock(id: String!): blocksDocAccess
+  Calendar(id: String!, draft: Boolean, fallbackLocale: FallbackLocaleInputType, locale: LocaleInputType): Calendar
+  Calendars(draft: Boolean, where: Calendar_where, fallbackLocale: FallbackLocaleInputType, locale: LocaleInputType, limit: Int, page: Int, sort: String): Calendars
+  docAccessCalendar(id: String!): calendarDocAccess
+  File(id: String!, draft: Boolean, fallbackLocale: FallbackLocaleInputType, locale: LocaleInputType): File
+  Files(draft: Boolean, where: File_where, fallbackLocale: FallbackLocaleInputType, locale: LocaleInputType, limit: Int, page: Int, sort: String): Files
+  docAccessFile(id: String!): filesDocAccess
+  Team(id: String!, draft: Boolean, fallbackLocale: FallbackLocaleInputType, locale: LocaleInputType): Team
+  Teams(draft: Boolean, where: Team_where, fallbackLocale: FallbackLocaleInputType, locale: LocaleInputType, limit: Int, page: Int, sort: String): Teams
+  docAccessTeam(id: String!): teamsDocAccess
   PayloadPreference(id: String!, draft: Boolean, fallbackLocale: FallbackLocaleInputType, locale: LocaleInputType): PayloadPreference
   PayloadPreferences(draft: Boolean, where: PayloadPreference_where, fallbackLocale: FallbackLocaleInputType, locale: LocaleInputType, limit: Int, page: Int, sort: String): PayloadPreferences
   docAccessPayloadPreference(id: String!): payload_preferencesDocAccess
@@ -44,6 +53,10 @@ type Query {
   docAccessSetting: settingsDocAccess
   NewsPage(draft: Boolean, fallbackLocale: FallbackLocaleInputType, locale: LocaleInputType): NewsPage
   docAccessNewsPage: newsPageDocAccess
+  TeamsPage(draft: Boolean, fallbackLocale: FallbackLocaleInputType, locale: LocaleInputType): TeamsPage
+  docAccessTeamsPage: teamsPageDocAccess
+  ServicesPage(draft: Boolean, fallbackLocale: FallbackLocaleInputType, locale: LocaleInputType): ServicesPage
+  docAccessServicesPage: servicesPageDocAccess
   Access: Access
 }
 
@@ -67,6 +80,7 @@ type User {
 enum User_roles {
   admin
   user
+  staff
 }
 
 """
@@ -154,6 +168,7 @@ input User_roles_operator {
 enum User_roles_Input {
   admin
   user
+  staff
 }
 
 input User_updatedAt_operator {
@@ -4744,6 +4759,1615 @@ type BlocksDeleteDocAccess {
   where: JSONObject
 }
 
+type Calendar {
+  id: String
+  title: String
+  staff(locale: LocaleInputType, fallbackLocale: FallbackLocaleInputType): User!
+  startDateTime: DateTime
+  endDateTime: DateTime
+  status: Calendar_status
+  description(depth: Int): JSON
+  updatedAt: DateTime
+  createdAt: DateTime
+}
+
+enum Calendar_status {
+  public
+  private
+}
+
+type Calendars {
+  docs: [Calendar]
+  hasNextPage: Boolean
+  hasPrevPage: Boolean
+  limit: Int
+  nextPage: Int
+  offset: Int
+  page: Int
+  pagingCounter: Int
+  prevPage: Int
+  totalDocs: Int
+  totalPages: Int
+}
+
+input Calendar_where {
+  title: Calendar_title_operator
+  staff: Calendar_staff_operator
+  startDateTime: Calendar_startDateTime_operator
+  endDateTime: Calendar_endDateTime_operator
+  status: Calendar_status_operator
+  description: Calendar_description_operator
+  updatedAt: Calendar_updatedAt_operator
+  createdAt: Calendar_createdAt_operator
+  id: Calendar_id_operator
+  AND: [Calendar_where_and]
+  OR: [Calendar_where_or]
+}
+
+input Calendar_title_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  in: [String]
+  not_in: [String]
+  all: [String]
+}
+
+input Calendar_staff_operator {
+  equals: JSON
+  not_equals: JSON
+  in: [JSON]
+  not_in: [JSON]
+  all: [JSON]
+}
+
+input Calendar_startDateTime_operator {
+  equals: DateTime
+  not_equals: DateTime
+  greater_than_equal: DateTime
+  greater_than: DateTime
+  less_than_equal: DateTime
+  less_than: DateTime
+  like: DateTime
+  exists: Boolean
+}
+
+input Calendar_endDateTime_operator {
+  equals: DateTime
+  not_equals: DateTime
+  greater_than_equal: DateTime
+  greater_than: DateTime
+  less_than_equal: DateTime
+  less_than: DateTime
+  like: DateTime
+  exists: Boolean
+}
+
+input Calendar_status_operator {
+  equals: Calendar_status_Input
+  not_equals: Calendar_status_Input
+  in: [Calendar_status_Input]
+  not_in: [Calendar_status_Input]
+  all: [Calendar_status_Input]
+  exists: Boolean
+}
+
+enum Calendar_status_Input {
+  public
+  private
+}
+
+input Calendar_description_operator {
+  equals: JSON
+  not_equals: JSON
+  like: JSON
+  contains: JSON
+  exists: Boolean
+}
+
+input Calendar_updatedAt_operator {
+  equals: DateTime
+  not_equals: DateTime
+  greater_than_equal: DateTime
+  greater_than: DateTime
+  less_than_equal: DateTime
+  less_than: DateTime
+  like: DateTime
+  exists: Boolean
+}
+
+input Calendar_createdAt_operator {
+  equals: DateTime
+  not_equals: DateTime
+  greater_than_equal: DateTime
+  greater_than: DateTime
+  less_than_equal: DateTime
+  less_than: DateTime
+  like: DateTime
+  exists: Boolean
+}
+
+input Calendar_id_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  in: [String]
+  not_in: [String]
+  all: [String]
+  exists: Boolean
+}
+
+input Calendar_where_and {
+  title: Calendar_title_operator
+  staff: Calendar_staff_operator
+  startDateTime: Calendar_startDateTime_operator
+  endDateTime: Calendar_endDateTime_operator
+  status: Calendar_status_operator
+  description: Calendar_description_operator
+  updatedAt: Calendar_updatedAt_operator
+  createdAt: Calendar_createdAt_operator
+  id: Calendar_id_operator
+  AND: [Calendar_where_and]
+  OR: [Calendar_where_or]
+}
+
+input Calendar_where_or {
+  title: Calendar_title_operator
+  staff: Calendar_staff_operator
+  startDateTime: Calendar_startDateTime_operator
+  endDateTime: Calendar_endDateTime_operator
+  status: Calendar_status_operator
+  description: Calendar_description_operator
+  updatedAt: Calendar_updatedAt_operator
+  createdAt: Calendar_createdAt_operator
+  id: Calendar_id_operator
+  AND: [Calendar_where_and]
+  OR: [Calendar_where_or]
+}
+
+type calendarDocAccess {
+  fields: CalendarDocAccessFields
+  create: CalendarCreateDocAccess
+  read: CalendarReadDocAccess
+  update: CalendarUpdateDocAccess
+  delete: CalendarDeleteDocAccess
+}
+
+type CalendarDocAccessFields {
+  title: CalendarDocAccessFields_title
+  staff: CalendarDocAccessFields_staff
+  startDateTime: CalendarDocAccessFields_startDateTime
+  endDateTime: CalendarDocAccessFields_endDateTime
+  status: CalendarDocAccessFields_status
+  description: CalendarDocAccessFields_description
+  updatedAt: CalendarDocAccessFields_updatedAt
+  createdAt: CalendarDocAccessFields_createdAt
+}
+
+type CalendarDocAccessFields_title {
+  create: CalendarDocAccessFields_title_Create
+  read: CalendarDocAccessFields_title_Read
+  update: CalendarDocAccessFields_title_Update
+  delete: CalendarDocAccessFields_title_Delete
+}
+
+type CalendarDocAccessFields_title_Create {
+  permission: Boolean!
+}
+
+type CalendarDocAccessFields_title_Read {
+  permission: Boolean!
+}
+
+type CalendarDocAccessFields_title_Update {
+  permission: Boolean!
+}
+
+type CalendarDocAccessFields_title_Delete {
+  permission: Boolean!
+}
+
+type CalendarDocAccessFields_staff {
+  create: CalendarDocAccessFields_staff_Create
+  read: CalendarDocAccessFields_staff_Read
+  update: CalendarDocAccessFields_staff_Update
+  delete: CalendarDocAccessFields_staff_Delete
+}
+
+type CalendarDocAccessFields_staff_Create {
+  permission: Boolean!
+}
+
+type CalendarDocAccessFields_staff_Read {
+  permission: Boolean!
+}
+
+type CalendarDocAccessFields_staff_Update {
+  permission: Boolean!
+}
+
+type CalendarDocAccessFields_staff_Delete {
+  permission: Boolean!
+}
+
+type CalendarDocAccessFields_startDateTime {
+  create: CalendarDocAccessFields_startDateTime_Create
+  read: CalendarDocAccessFields_startDateTime_Read
+  update: CalendarDocAccessFields_startDateTime_Update
+  delete: CalendarDocAccessFields_startDateTime_Delete
+}
+
+type CalendarDocAccessFields_startDateTime_Create {
+  permission: Boolean!
+}
+
+type CalendarDocAccessFields_startDateTime_Read {
+  permission: Boolean!
+}
+
+type CalendarDocAccessFields_startDateTime_Update {
+  permission: Boolean!
+}
+
+type CalendarDocAccessFields_startDateTime_Delete {
+  permission: Boolean!
+}
+
+type CalendarDocAccessFields_endDateTime {
+  create: CalendarDocAccessFields_endDateTime_Create
+  read: CalendarDocAccessFields_endDateTime_Read
+  update: CalendarDocAccessFields_endDateTime_Update
+  delete: CalendarDocAccessFields_endDateTime_Delete
+}
+
+type CalendarDocAccessFields_endDateTime_Create {
+  permission: Boolean!
+}
+
+type CalendarDocAccessFields_endDateTime_Read {
+  permission: Boolean!
+}
+
+type CalendarDocAccessFields_endDateTime_Update {
+  permission: Boolean!
+}
+
+type CalendarDocAccessFields_endDateTime_Delete {
+  permission: Boolean!
+}
+
+type CalendarDocAccessFields_status {
+  create: CalendarDocAccessFields_status_Create
+  read: CalendarDocAccessFields_status_Read
+  update: CalendarDocAccessFields_status_Update
+  delete: CalendarDocAccessFields_status_Delete
+}
+
+type CalendarDocAccessFields_status_Create {
+  permission: Boolean!
+}
+
+type CalendarDocAccessFields_status_Read {
+  permission: Boolean!
+}
+
+type CalendarDocAccessFields_status_Update {
+  permission: Boolean!
+}
+
+type CalendarDocAccessFields_status_Delete {
+  permission: Boolean!
+}
+
+type CalendarDocAccessFields_description {
+  create: CalendarDocAccessFields_description_Create
+  read: CalendarDocAccessFields_description_Read
+  update: CalendarDocAccessFields_description_Update
+  delete: CalendarDocAccessFields_description_Delete
+}
+
+type CalendarDocAccessFields_description_Create {
+  permission: Boolean!
+}
+
+type CalendarDocAccessFields_description_Read {
+  permission: Boolean!
+}
+
+type CalendarDocAccessFields_description_Update {
+  permission: Boolean!
+}
+
+type CalendarDocAccessFields_description_Delete {
+  permission: Boolean!
+}
+
+type CalendarDocAccessFields_updatedAt {
+  create: CalendarDocAccessFields_updatedAt_Create
+  read: CalendarDocAccessFields_updatedAt_Read
+  update: CalendarDocAccessFields_updatedAt_Update
+  delete: CalendarDocAccessFields_updatedAt_Delete
+}
+
+type CalendarDocAccessFields_updatedAt_Create {
+  permission: Boolean!
+}
+
+type CalendarDocAccessFields_updatedAt_Read {
+  permission: Boolean!
+}
+
+type CalendarDocAccessFields_updatedAt_Update {
+  permission: Boolean!
+}
+
+type CalendarDocAccessFields_updatedAt_Delete {
+  permission: Boolean!
+}
+
+type CalendarDocAccessFields_createdAt {
+  create: CalendarDocAccessFields_createdAt_Create
+  read: CalendarDocAccessFields_createdAt_Read
+  update: CalendarDocAccessFields_createdAt_Update
+  delete: CalendarDocAccessFields_createdAt_Delete
+}
+
+type CalendarDocAccessFields_createdAt_Create {
+  permission: Boolean!
+}
+
+type CalendarDocAccessFields_createdAt_Read {
+  permission: Boolean!
+}
+
+type CalendarDocAccessFields_createdAt_Update {
+  permission: Boolean!
+}
+
+type CalendarDocAccessFields_createdAt_Delete {
+  permission: Boolean!
+}
+
+type CalendarCreateDocAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+type CalendarReadDocAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+type CalendarUpdateDocAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+type CalendarDeleteDocAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+type File {
+  id: String
+  status: File_status
+  creator(locale: LocaleInputType, fallbackLocale: FallbackLocaleInputType): User
+  updatedAt: DateTime
+  createdAt: DateTime
+  url: String
+  filename: String
+  mimeType: String
+  filesize: Float
+  width: Float
+  height: Float
+}
+
+enum File_status {
+  public
+  private
+}
+
+type Files {
+  docs: [File]
+  hasNextPage: Boolean
+  hasPrevPage: Boolean
+  limit: Int
+  nextPage: Int
+  offset: Int
+  page: Int
+  pagingCounter: Int
+  prevPage: Int
+  totalDocs: Int
+  totalPages: Int
+}
+
+input File_where {
+  status: File_status_operator
+  creator: File_creator_operator
+  updatedAt: File_updatedAt_operator
+  createdAt: File_createdAt_operator
+  url: File_url_operator
+  filename: File_filename_operator
+  mimeType: File_mimeType_operator
+  filesize: File_filesize_operator
+  width: File_width_operator
+  height: File_height_operator
+  id: File_id_operator
+  AND: [File_where_and]
+  OR: [File_where_or]
+}
+
+input File_status_operator {
+  equals: File_status_Input
+  not_equals: File_status_Input
+  in: [File_status_Input]
+  not_in: [File_status_Input]
+  all: [File_status_Input]
+  exists: Boolean
+}
+
+enum File_status_Input {
+  public
+  private
+}
+
+input File_creator_operator {
+  equals: JSON
+  not_equals: JSON
+  in: [JSON]
+  not_in: [JSON]
+  all: [JSON]
+  exists: Boolean
+}
+
+input File_updatedAt_operator {
+  equals: DateTime
+  not_equals: DateTime
+  greater_than_equal: DateTime
+  greater_than: DateTime
+  less_than_equal: DateTime
+  less_than: DateTime
+  like: DateTime
+  exists: Boolean
+}
+
+input File_createdAt_operator {
+  equals: DateTime
+  not_equals: DateTime
+  greater_than_equal: DateTime
+  greater_than: DateTime
+  less_than_equal: DateTime
+  less_than: DateTime
+  like: DateTime
+  exists: Boolean
+}
+
+input File_url_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  in: [String]
+  not_in: [String]
+  all: [String]
+  exists: Boolean
+}
+
+input File_filename_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  in: [String]
+  not_in: [String]
+  all: [String]
+  exists: Boolean
+}
+
+input File_mimeType_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  in: [String]
+  not_in: [String]
+  all: [String]
+  exists: Boolean
+}
+
+input File_filesize_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input File_width_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input File_height_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input File_id_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  in: [String]
+  not_in: [String]
+  all: [String]
+  exists: Boolean
+}
+
+input File_where_and {
+  status: File_status_operator
+  creator: File_creator_operator
+  updatedAt: File_updatedAt_operator
+  createdAt: File_createdAt_operator
+  url: File_url_operator
+  filename: File_filename_operator
+  mimeType: File_mimeType_operator
+  filesize: File_filesize_operator
+  width: File_width_operator
+  height: File_height_operator
+  id: File_id_operator
+  AND: [File_where_and]
+  OR: [File_where_or]
+}
+
+input File_where_or {
+  status: File_status_operator
+  creator: File_creator_operator
+  updatedAt: File_updatedAt_operator
+  createdAt: File_createdAt_operator
+  url: File_url_operator
+  filename: File_filename_operator
+  mimeType: File_mimeType_operator
+  filesize: File_filesize_operator
+  width: File_width_operator
+  height: File_height_operator
+  id: File_id_operator
+  AND: [File_where_and]
+  OR: [File_where_or]
+}
+
+type filesDocAccess {
+  fields: FilesDocAccessFields
+  create: FilesCreateDocAccess
+  read: FilesReadDocAccess
+  update: FilesUpdateDocAccess
+  delete: FilesDeleteDocAccess
+}
+
+type FilesDocAccessFields {
+  status: FilesDocAccessFields_status
+  creator: FilesDocAccessFields_creator
+  updatedAt: FilesDocAccessFields_updatedAt
+  createdAt: FilesDocAccessFields_createdAt
+  url: FilesDocAccessFields_url
+  filename: FilesDocAccessFields_filename
+  mimeType: FilesDocAccessFields_mimeType
+  filesize: FilesDocAccessFields_filesize
+  width: FilesDocAccessFields_width
+  height: FilesDocAccessFields_height
+}
+
+type FilesDocAccessFields_status {
+  create: FilesDocAccessFields_status_Create
+  read: FilesDocAccessFields_status_Read
+  update: FilesDocAccessFields_status_Update
+  delete: FilesDocAccessFields_status_Delete
+}
+
+type FilesDocAccessFields_status_Create {
+  permission: Boolean!
+}
+
+type FilesDocAccessFields_status_Read {
+  permission: Boolean!
+}
+
+type FilesDocAccessFields_status_Update {
+  permission: Boolean!
+}
+
+type FilesDocAccessFields_status_Delete {
+  permission: Boolean!
+}
+
+type FilesDocAccessFields_creator {
+  create: FilesDocAccessFields_creator_Create
+  read: FilesDocAccessFields_creator_Read
+  update: FilesDocAccessFields_creator_Update
+  delete: FilesDocAccessFields_creator_Delete
+}
+
+type FilesDocAccessFields_creator_Create {
+  permission: Boolean!
+}
+
+type FilesDocAccessFields_creator_Read {
+  permission: Boolean!
+}
+
+type FilesDocAccessFields_creator_Update {
+  permission: Boolean!
+}
+
+type FilesDocAccessFields_creator_Delete {
+  permission: Boolean!
+}
+
+type FilesDocAccessFields_updatedAt {
+  create: FilesDocAccessFields_updatedAt_Create
+  read: FilesDocAccessFields_updatedAt_Read
+  update: FilesDocAccessFields_updatedAt_Update
+  delete: FilesDocAccessFields_updatedAt_Delete
+}
+
+type FilesDocAccessFields_updatedAt_Create {
+  permission: Boolean!
+}
+
+type FilesDocAccessFields_updatedAt_Read {
+  permission: Boolean!
+}
+
+type FilesDocAccessFields_updatedAt_Update {
+  permission: Boolean!
+}
+
+type FilesDocAccessFields_updatedAt_Delete {
+  permission: Boolean!
+}
+
+type FilesDocAccessFields_createdAt {
+  create: FilesDocAccessFields_createdAt_Create
+  read: FilesDocAccessFields_createdAt_Read
+  update: FilesDocAccessFields_createdAt_Update
+  delete: FilesDocAccessFields_createdAt_Delete
+}
+
+type FilesDocAccessFields_createdAt_Create {
+  permission: Boolean!
+}
+
+type FilesDocAccessFields_createdAt_Read {
+  permission: Boolean!
+}
+
+type FilesDocAccessFields_createdAt_Update {
+  permission: Boolean!
+}
+
+type FilesDocAccessFields_createdAt_Delete {
+  permission: Boolean!
+}
+
+type FilesDocAccessFields_url {
+  create: FilesDocAccessFields_url_Create
+  read: FilesDocAccessFields_url_Read
+  update: FilesDocAccessFields_url_Update
+  delete: FilesDocAccessFields_url_Delete
+}
+
+type FilesDocAccessFields_url_Create {
+  permission: Boolean!
+}
+
+type FilesDocAccessFields_url_Read {
+  permission: Boolean!
+}
+
+type FilesDocAccessFields_url_Update {
+  permission: Boolean!
+}
+
+type FilesDocAccessFields_url_Delete {
+  permission: Boolean!
+}
+
+type FilesDocAccessFields_filename {
+  create: FilesDocAccessFields_filename_Create
+  read: FilesDocAccessFields_filename_Read
+  update: FilesDocAccessFields_filename_Update
+  delete: FilesDocAccessFields_filename_Delete
+}
+
+type FilesDocAccessFields_filename_Create {
+  permission: Boolean!
+}
+
+type FilesDocAccessFields_filename_Read {
+  permission: Boolean!
+}
+
+type FilesDocAccessFields_filename_Update {
+  permission: Boolean!
+}
+
+type FilesDocAccessFields_filename_Delete {
+  permission: Boolean!
+}
+
+type FilesDocAccessFields_mimeType {
+  create: FilesDocAccessFields_mimeType_Create
+  read: FilesDocAccessFields_mimeType_Read
+  update: FilesDocAccessFields_mimeType_Update
+  delete: FilesDocAccessFields_mimeType_Delete
+}
+
+type FilesDocAccessFields_mimeType_Create {
+  permission: Boolean!
+}
+
+type FilesDocAccessFields_mimeType_Read {
+  permission: Boolean!
+}
+
+type FilesDocAccessFields_mimeType_Update {
+  permission: Boolean!
+}
+
+type FilesDocAccessFields_mimeType_Delete {
+  permission: Boolean!
+}
+
+type FilesDocAccessFields_filesize {
+  create: FilesDocAccessFields_filesize_Create
+  read: FilesDocAccessFields_filesize_Read
+  update: FilesDocAccessFields_filesize_Update
+  delete: FilesDocAccessFields_filesize_Delete
+}
+
+type FilesDocAccessFields_filesize_Create {
+  permission: Boolean!
+}
+
+type FilesDocAccessFields_filesize_Read {
+  permission: Boolean!
+}
+
+type FilesDocAccessFields_filesize_Update {
+  permission: Boolean!
+}
+
+type FilesDocAccessFields_filesize_Delete {
+  permission: Boolean!
+}
+
+type FilesDocAccessFields_width {
+  create: FilesDocAccessFields_width_Create
+  read: FilesDocAccessFields_width_Read
+  update: FilesDocAccessFields_width_Update
+  delete: FilesDocAccessFields_width_Delete
+}
+
+type FilesDocAccessFields_width_Create {
+  permission: Boolean!
+}
+
+type FilesDocAccessFields_width_Read {
+  permission: Boolean!
+}
+
+type FilesDocAccessFields_width_Update {
+  permission: Boolean!
+}
+
+type FilesDocAccessFields_width_Delete {
+  permission: Boolean!
+}
+
+type FilesDocAccessFields_height {
+  create: FilesDocAccessFields_height_Create
+  read: FilesDocAccessFields_height_Read
+  update: FilesDocAccessFields_height_Update
+  delete: FilesDocAccessFields_height_Delete
+}
+
+type FilesDocAccessFields_height_Create {
+  permission: Boolean!
+}
+
+type FilesDocAccessFields_height_Read {
+  permission: Boolean!
+}
+
+type FilesDocAccessFields_height_Update {
+  permission: Boolean!
+}
+
+type FilesDocAccessFields_height_Delete {
+  permission: Boolean!
+}
+
+type FilesCreateDocAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+type FilesReadDocAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+type FilesUpdateDocAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+type FilesDeleteDocAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+type Team {
+  id: String
+  title: String
+  name: String
+  email: String
+  phone: String
+  slug: String
+  thumbnail(locale: LocaleInputType, fallbackLocale: FallbackLocaleInputType, where: Team_Thumbnail_where): Media
+  description(depth: Int): JSON
+  updatedAt: DateTime
+  createdAt: DateTime
+}
+
+input Team_Thumbnail_where {
+  alt: Team_Thumbnail_alt_operator
+  creator: Team_Thumbnail_creator_operator
+  updatedAt: Team_Thumbnail_updatedAt_operator
+  createdAt: Team_Thumbnail_createdAt_operator
+  url: Team_Thumbnail_url_operator
+  filename: Team_Thumbnail_filename_operator
+  mimeType: Team_Thumbnail_mimeType_operator
+  filesize: Team_Thumbnail_filesize_operator
+  width: Team_Thumbnail_width_operator
+  height: Team_Thumbnail_height_operator
+  sizes__thumbnail__url: Team_Thumbnail_sizes__thumbnail__url_operator
+  sizes__thumbnail__width: Team_Thumbnail_sizes__thumbnail__width_operator
+  sizes__thumbnail__height: Team_Thumbnail_sizes__thumbnail__height_operator
+  sizes__thumbnail__mimeType: Team_Thumbnail_sizes__thumbnail__mimeType_operator
+  sizes__thumbnail__filesize: Team_Thumbnail_sizes__thumbnail__filesize_operator
+  sizes__thumbnail__filename: Team_Thumbnail_sizes__thumbnail__filename_operator
+  sizes__sixteenByNineMedium__url: Team_Thumbnail_sizes__sixteenByNineMedium__url_operator
+  sizes__sixteenByNineMedium__width: Team_Thumbnail_sizes__sixteenByNineMedium__width_operator
+  sizes__sixteenByNineMedium__height: Team_Thumbnail_sizes__sixteenByNineMedium__height_operator
+  sizes__sixteenByNineMedium__mimeType: Team_Thumbnail_sizes__sixteenByNineMedium__mimeType_operator
+  sizes__sixteenByNineMedium__filesize: Team_Thumbnail_sizes__sixteenByNineMedium__filesize_operator
+  sizes__sixteenByNineMedium__filename: Team_Thumbnail_sizes__sixteenByNineMedium__filename_operator
+  id: Team_Thumbnail_id_operator
+  AND: [Team_Thumbnail_where_and]
+  OR: [Team_Thumbnail_where_or]
+}
+
+input Team_Thumbnail_alt_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  in: [String]
+  not_in: [String]
+  all: [String]
+  exists: Boolean
+}
+
+input Team_Thumbnail_creator_operator {
+  equals: JSON
+  not_equals: JSON
+  in: [JSON]
+  not_in: [JSON]
+  all: [JSON]
+  exists: Boolean
+}
+
+input Team_Thumbnail_updatedAt_operator {
+  equals: DateTime
+  not_equals: DateTime
+  greater_than_equal: DateTime
+  greater_than: DateTime
+  less_than_equal: DateTime
+  less_than: DateTime
+  like: DateTime
+  exists: Boolean
+}
+
+input Team_Thumbnail_createdAt_operator {
+  equals: DateTime
+  not_equals: DateTime
+  greater_than_equal: DateTime
+  greater_than: DateTime
+  less_than_equal: DateTime
+  less_than: DateTime
+  like: DateTime
+  exists: Boolean
+}
+
+input Team_Thumbnail_url_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  in: [String]
+  not_in: [String]
+  all: [String]
+  exists: Boolean
+}
+
+input Team_Thumbnail_filename_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  in: [String]
+  not_in: [String]
+  all: [String]
+  exists: Boolean
+}
+
+input Team_Thumbnail_mimeType_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  in: [String]
+  not_in: [String]
+  all: [String]
+  exists: Boolean
+}
+
+input Team_Thumbnail_filesize_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input Team_Thumbnail_width_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input Team_Thumbnail_height_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input Team_Thumbnail_sizes__thumbnail__url_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  in: [String]
+  not_in: [String]
+  all: [String]
+  exists: Boolean
+}
+
+input Team_Thumbnail_sizes__thumbnail__width_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input Team_Thumbnail_sizes__thumbnail__height_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input Team_Thumbnail_sizes__thumbnail__mimeType_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  in: [String]
+  not_in: [String]
+  all: [String]
+  exists: Boolean
+}
+
+input Team_Thumbnail_sizes__thumbnail__filesize_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input Team_Thumbnail_sizes__thumbnail__filename_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  in: [String]
+  not_in: [String]
+  all: [String]
+  exists: Boolean
+}
+
+input Team_Thumbnail_sizes__sixteenByNineMedium__url_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  in: [String]
+  not_in: [String]
+  all: [String]
+  exists: Boolean
+}
+
+input Team_Thumbnail_sizes__sixteenByNineMedium__width_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input Team_Thumbnail_sizes__sixteenByNineMedium__height_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input Team_Thumbnail_sizes__sixteenByNineMedium__mimeType_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  in: [String]
+  not_in: [String]
+  all: [String]
+  exists: Boolean
+}
+
+input Team_Thumbnail_sizes__sixteenByNineMedium__filesize_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input Team_Thumbnail_sizes__sixteenByNineMedium__filename_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  in: [String]
+  not_in: [String]
+  all: [String]
+  exists: Boolean
+}
+
+input Team_Thumbnail_id_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  in: [String]
+  not_in: [String]
+  all: [String]
+  exists: Boolean
+}
+
+input Team_Thumbnail_where_and {
+  alt: Team_Thumbnail_alt_operator
+  creator: Team_Thumbnail_creator_operator
+  updatedAt: Team_Thumbnail_updatedAt_operator
+  createdAt: Team_Thumbnail_createdAt_operator
+  url: Team_Thumbnail_url_operator
+  filename: Team_Thumbnail_filename_operator
+  mimeType: Team_Thumbnail_mimeType_operator
+  filesize: Team_Thumbnail_filesize_operator
+  width: Team_Thumbnail_width_operator
+  height: Team_Thumbnail_height_operator
+  sizes__thumbnail__url: Team_Thumbnail_sizes__thumbnail__url_operator
+  sizes__thumbnail__width: Team_Thumbnail_sizes__thumbnail__width_operator
+  sizes__thumbnail__height: Team_Thumbnail_sizes__thumbnail__height_operator
+  sizes__thumbnail__mimeType: Team_Thumbnail_sizes__thumbnail__mimeType_operator
+  sizes__thumbnail__filesize: Team_Thumbnail_sizes__thumbnail__filesize_operator
+  sizes__thumbnail__filename: Team_Thumbnail_sizes__thumbnail__filename_operator
+  sizes__sixteenByNineMedium__url: Team_Thumbnail_sizes__sixteenByNineMedium__url_operator
+  sizes__sixteenByNineMedium__width: Team_Thumbnail_sizes__sixteenByNineMedium__width_operator
+  sizes__sixteenByNineMedium__height: Team_Thumbnail_sizes__sixteenByNineMedium__height_operator
+  sizes__sixteenByNineMedium__mimeType: Team_Thumbnail_sizes__sixteenByNineMedium__mimeType_operator
+  sizes__sixteenByNineMedium__filesize: Team_Thumbnail_sizes__sixteenByNineMedium__filesize_operator
+  sizes__sixteenByNineMedium__filename: Team_Thumbnail_sizes__sixteenByNineMedium__filename_operator
+  id: Team_Thumbnail_id_operator
+  AND: [Team_Thumbnail_where_and]
+  OR: [Team_Thumbnail_where_or]
+}
+
+input Team_Thumbnail_where_or {
+  alt: Team_Thumbnail_alt_operator
+  creator: Team_Thumbnail_creator_operator
+  updatedAt: Team_Thumbnail_updatedAt_operator
+  createdAt: Team_Thumbnail_createdAt_operator
+  url: Team_Thumbnail_url_operator
+  filename: Team_Thumbnail_filename_operator
+  mimeType: Team_Thumbnail_mimeType_operator
+  filesize: Team_Thumbnail_filesize_operator
+  width: Team_Thumbnail_width_operator
+  height: Team_Thumbnail_height_operator
+  sizes__thumbnail__url: Team_Thumbnail_sizes__thumbnail__url_operator
+  sizes__thumbnail__width: Team_Thumbnail_sizes__thumbnail__width_operator
+  sizes__thumbnail__height: Team_Thumbnail_sizes__thumbnail__height_operator
+  sizes__thumbnail__mimeType: Team_Thumbnail_sizes__thumbnail__mimeType_operator
+  sizes__thumbnail__filesize: Team_Thumbnail_sizes__thumbnail__filesize_operator
+  sizes__thumbnail__filename: Team_Thumbnail_sizes__thumbnail__filename_operator
+  sizes__sixteenByNineMedium__url: Team_Thumbnail_sizes__sixteenByNineMedium__url_operator
+  sizes__sixteenByNineMedium__width: Team_Thumbnail_sizes__sixteenByNineMedium__width_operator
+  sizes__sixteenByNineMedium__height: Team_Thumbnail_sizes__sixteenByNineMedium__height_operator
+  sizes__sixteenByNineMedium__mimeType: Team_Thumbnail_sizes__sixteenByNineMedium__mimeType_operator
+  sizes__sixteenByNineMedium__filesize: Team_Thumbnail_sizes__sixteenByNineMedium__filesize_operator
+  sizes__sixteenByNineMedium__filename: Team_Thumbnail_sizes__sixteenByNineMedium__filename_operator
+  id: Team_Thumbnail_id_operator
+  AND: [Team_Thumbnail_where_and]
+  OR: [Team_Thumbnail_where_or]
+}
+
+type Teams {
+  docs: [Team]
+  hasNextPage: Boolean
+  hasPrevPage: Boolean
+  limit: Int
+  nextPage: Int
+  offset: Int
+  page: Int
+  pagingCounter: Int
+  prevPage: Int
+  totalDocs: Int
+  totalPages: Int
+}
+
+input Team_where {
+  title: Team_title_operator
+  name: Team_name_operator
+  email: Team_email_operator
+  phone: Team_phone_operator
+  slug: Team_slug_operator
+  thumbnail: Team_thumbnail_operator
+  description: Team_description_operator
+  updatedAt: Team_updatedAt_operator
+  createdAt: Team_createdAt_operator
+  id: Team_id_operator
+  AND: [Team_where_and]
+  OR: [Team_where_or]
+}
+
+input Team_title_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  in: [String]
+  not_in: [String]
+  all: [String]
+  exists: Boolean
+}
+
+input Team_name_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  in: [String]
+  not_in: [String]
+  all: [String]
+  exists: Boolean
+}
+
+input Team_email_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  in: [String]
+  not_in: [String]
+  all: [String]
+  exists: Boolean
+}
+
+input Team_phone_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  in: [String]
+  not_in: [String]
+  all: [String]
+  exists: Boolean
+}
+
+input Team_slug_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  in: [String]
+  not_in: [String]
+  all: [String]
+  exists: Boolean
+}
+
+input Team_thumbnail_operator {
+  equals: String
+  not_equals: String
+  exists: Boolean
+}
+
+input Team_description_operator {
+  equals: JSON
+  not_equals: JSON
+  like: JSON
+  contains: JSON
+  exists: Boolean
+}
+
+input Team_updatedAt_operator {
+  equals: DateTime
+  not_equals: DateTime
+  greater_than_equal: DateTime
+  greater_than: DateTime
+  less_than_equal: DateTime
+  less_than: DateTime
+  like: DateTime
+  exists: Boolean
+}
+
+input Team_createdAt_operator {
+  equals: DateTime
+  not_equals: DateTime
+  greater_than_equal: DateTime
+  greater_than: DateTime
+  less_than_equal: DateTime
+  less_than: DateTime
+  like: DateTime
+  exists: Boolean
+}
+
+input Team_id_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  in: [String]
+  not_in: [String]
+  all: [String]
+  exists: Boolean
+}
+
+input Team_where_and {
+  title: Team_title_operator
+  name: Team_name_operator
+  email: Team_email_operator
+  phone: Team_phone_operator
+  slug: Team_slug_operator
+  thumbnail: Team_thumbnail_operator
+  description: Team_description_operator
+  updatedAt: Team_updatedAt_operator
+  createdAt: Team_createdAt_operator
+  id: Team_id_operator
+  AND: [Team_where_and]
+  OR: [Team_where_or]
+}
+
+input Team_where_or {
+  title: Team_title_operator
+  name: Team_name_operator
+  email: Team_email_operator
+  phone: Team_phone_operator
+  slug: Team_slug_operator
+  thumbnail: Team_thumbnail_operator
+  description: Team_description_operator
+  updatedAt: Team_updatedAt_operator
+  createdAt: Team_createdAt_operator
+  id: Team_id_operator
+  AND: [Team_where_and]
+  OR: [Team_where_or]
+}
+
+type teamsDocAccess {
+  fields: TeamsDocAccessFields
+  create: TeamsCreateDocAccess
+  read: TeamsReadDocAccess
+  update: TeamsUpdateDocAccess
+  delete: TeamsDeleteDocAccess
+}
+
+type TeamsDocAccessFields {
+  title: TeamsDocAccessFields_title
+  name: TeamsDocAccessFields_name
+  email: TeamsDocAccessFields_email
+  phone: TeamsDocAccessFields_phone
+  slug: TeamsDocAccessFields_slug
+  thumbnail: TeamsDocAccessFields_thumbnail
+  description: TeamsDocAccessFields_description
+  updatedAt: TeamsDocAccessFields_updatedAt
+  createdAt: TeamsDocAccessFields_createdAt
+}
+
+type TeamsDocAccessFields_title {
+  create: TeamsDocAccessFields_title_Create
+  read: TeamsDocAccessFields_title_Read
+  update: TeamsDocAccessFields_title_Update
+  delete: TeamsDocAccessFields_title_Delete
+}
+
+type TeamsDocAccessFields_title_Create {
+  permission: Boolean!
+}
+
+type TeamsDocAccessFields_title_Read {
+  permission: Boolean!
+}
+
+type TeamsDocAccessFields_title_Update {
+  permission: Boolean!
+}
+
+type TeamsDocAccessFields_title_Delete {
+  permission: Boolean!
+}
+
+type TeamsDocAccessFields_name {
+  create: TeamsDocAccessFields_name_Create
+  read: TeamsDocAccessFields_name_Read
+  update: TeamsDocAccessFields_name_Update
+  delete: TeamsDocAccessFields_name_Delete
+}
+
+type TeamsDocAccessFields_name_Create {
+  permission: Boolean!
+}
+
+type TeamsDocAccessFields_name_Read {
+  permission: Boolean!
+}
+
+type TeamsDocAccessFields_name_Update {
+  permission: Boolean!
+}
+
+type TeamsDocAccessFields_name_Delete {
+  permission: Boolean!
+}
+
+type TeamsDocAccessFields_email {
+  create: TeamsDocAccessFields_email_Create
+  read: TeamsDocAccessFields_email_Read
+  update: TeamsDocAccessFields_email_Update
+  delete: TeamsDocAccessFields_email_Delete
+}
+
+type TeamsDocAccessFields_email_Create {
+  permission: Boolean!
+}
+
+type TeamsDocAccessFields_email_Read {
+  permission: Boolean!
+}
+
+type TeamsDocAccessFields_email_Update {
+  permission: Boolean!
+}
+
+type TeamsDocAccessFields_email_Delete {
+  permission: Boolean!
+}
+
+type TeamsDocAccessFields_phone {
+  create: TeamsDocAccessFields_phone_Create
+  read: TeamsDocAccessFields_phone_Read
+  update: TeamsDocAccessFields_phone_Update
+  delete: TeamsDocAccessFields_phone_Delete
+}
+
+type TeamsDocAccessFields_phone_Create {
+  permission: Boolean!
+}
+
+type TeamsDocAccessFields_phone_Read {
+  permission: Boolean!
+}
+
+type TeamsDocAccessFields_phone_Update {
+  permission: Boolean!
+}
+
+type TeamsDocAccessFields_phone_Delete {
+  permission: Boolean!
+}
+
+type TeamsDocAccessFields_slug {
+  create: TeamsDocAccessFields_slug_Create
+  read: TeamsDocAccessFields_slug_Read
+  update: TeamsDocAccessFields_slug_Update
+  delete: TeamsDocAccessFields_slug_Delete
+}
+
+type TeamsDocAccessFields_slug_Create {
+  permission: Boolean!
+}
+
+type TeamsDocAccessFields_slug_Read {
+  permission: Boolean!
+}
+
+type TeamsDocAccessFields_slug_Update {
+  permission: Boolean!
+}
+
+type TeamsDocAccessFields_slug_Delete {
+  permission: Boolean!
+}
+
+type TeamsDocAccessFields_thumbnail {
+  create: TeamsDocAccessFields_thumbnail_Create
+  read: TeamsDocAccessFields_thumbnail_Read
+  update: TeamsDocAccessFields_thumbnail_Update
+  delete: TeamsDocAccessFields_thumbnail_Delete
+}
+
+type TeamsDocAccessFields_thumbnail_Create {
+  permission: Boolean!
+}
+
+type TeamsDocAccessFields_thumbnail_Read {
+  permission: Boolean!
+}
+
+type TeamsDocAccessFields_thumbnail_Update {
+  permission: Boolean!
+}
+
+type TeamsDocAccessFields_thumbnail_Delete {
+  permission: Boolean!
+}
+
+type TeamsDocAccessFields_description {
+  create: TeamsDocAccessFields_description_Create
+  read: TeamsDocAccessFields_description_Read
+  update: TeamsDocAccessFields_description_Update
+  delete: TeamsDocAccessFields_description_Delete
+}
+
+type TeamsDocAccessFields_description_Create {
+  permission: Boolean!
+}
+
+type TeamsDocAccessFields_description_Read {
+  permission: Boolean!
+}
+
+type TeamsDocAccessFields_description_Update {
+  permission: Boolean!
+}
+
+type TeamsDocAccessFields_description_Delete {
+  permission: Boolean!
+}
+
+type TeamsDocAccessFields_updatedAt {
+  create: TeamsDocAccessFields_updatedAt_Create
+  read: TeamsDocAccessFields_updatedAt_Read
+  update: TeamsDocAccessFields_updatedAt_Update
+  delete: TeamsDocAccessFields_updatedAt_Delete
+}
+
+type TeamsDocAccessFields_updatedAt_Create {
+  permission: Boolean!
+}
+
+type TeamsDocAccessFields_updatedAt_Read {
+  permission: Boolean!
+}
+
+type TeamsDocAccessFields_updatedAt_Update {
+  permission: Boolean!
+}
+
+type TeamsDocAccessFields_updatedAt_Delete {
+  permission: Boolean!
+}
+
+type TeamsDocAccessFields_createdAt {
+  create: TeamsDocAccessFields_createdAt_Create
+  read: TeamsDocAccessFields_createdAt_Read
+  update: TeamsDocAccessFields_createdAt_Update
+  delete: TeamsDocAccessFields_createdAt_Delete
+}
+
+type TeamsDocAccessFields_createdAt_Create {
+  permission: Boolean!
+}
+
+type TeamsDocAccessFields_createdAt_Read {
+  permission: Boolean!
+}
+
+type TeamsDocAccessFields_createdAt_Update {
+  permission: Boolean!
+}
+
+type TeamsDocAccessFields_createdAt_Delete {
+  permission: Boolean!
+}
+
+type TeamsCreateDocAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+type TeamsReadDocAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+type TeamsUpdateDocAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+type TeamsDeleteDocAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
 type PayloadPreference {
   id: String
   user(locale: LocaleInputType, fallbackLocale: FallbackLocaleInputType): PayloadPreference_User_Relationship!
@@ -9221,6 +10845,327 @@ type NewsPageUpdateDocAccess {
   where: JSONObject
 }
 
+type TeamsPage {
+  content: TeamsPage_Content
+  seo: TeamsPage_Seo
+  others: TeamsPage_Others
+  updatedAt: DateTime
+  createdAt: DateTime
+}
+
+type TeamsPage_Content {
+  subTitle: String
+  title: String
+}
+
+type TeamsPage_Seo {
+  title: String
+}
+
+type TeamsPage_Others {
+  displayNewsletter: Boolean
+}
+
+type teamsPageDocAccess {
+  fields: TeamsPageDocAccessFields
+  read: TeamsPageReadDocAccess
+  update: TeamsPageUpdateDocAccess
+}
+
+type TeamsPageDocAccessFields {
+  subTitle: TeamsPageDocAccessFields_subTitle
+  title: TeamsPageDocAccessFields_title
+  displayNewsletter: TeamsPageDocAccessFields_displayNewsletter
+  updatedAt: TeamsPageDocAccessFields_updatedAt
+  createdAt: TeamsPageDocAccessFields_createdAt
+}
+
+type TeamsPageDocAccessFields_subTitle {
+  create: TeamsPageDocAccessFields_subTitle_Create
+  read: TeamsPageDocAccessFields_subTitle_Read
+  update: TeamsPageDocAccessFields_subTitle_Update
+  delete: TeamsPageDocAccessFields_subTitle_Delete
+}
+
+type TeamsPageDocAccessFields_subTitle_Create {
+  permission: Boolean!
+}
+
+type TeamsPageDocAccessFields_subTitle_Read {
+  permission: Boolean!
+}
+
+type TeamsPageDocAccessFields_subTitle_Update {
+  permission: Boolean!
+}
+
+type TeamsPageDocAccessFields_subTitle_Delete {
+  permission: Boolean!
+}
+
+type TeamsPageDocAccessFields_title {
+  create: TeamsPageDocAccessFields_title_Create
+  read: TeamsPageDocAccessFields_title_Read
+  update: TeamsPageDocAccessFields_title_Update
+  delete: TeamsPageDocAccessFields_title_Delete
+}
+
+type TeamsPageDocAccessFields_title_Create {
+  permission: Boolean!
+}
+
+type TeamsPageDocAccessFields_title_Read {
+  permission: Boolean!
+}
+
+type TeamsPageDocAccessFields_title_Update {
+  permission: Boolean!
+}
+
+type TeamsPageDocAccessFields_title_Delete {
+  permission: Boolean!
+}
+
+type TeamsPageDocAccessFields_displayNewsletter {
+  create: TeamsPageDocAccessFields_displayNewsletter_Create
+  read: TeamsPageDocAccessFields_displayNewsletter_Read
+  update: TeamsPageDocAccessFields_displayNewsletter_Update
+  delete: TeamsPageDocAccessFields_displayNewsletter_Delete
+}
+
+type TeamsPageDocAccessFields_displayNewsletter_Create {
+  permission: Boolean!
+}
+
+type TeamsPageDocAccessFields_displayNewsletter_Read {
+  permission: Boolean!
+}
+
+type TeamsPageDocAccessFields_displayNewsletter_Update {
+  permission: Boolean!
+}
+
+type TeamsPageDocAccessFields_displayNewsletter_Delete {
+  permission: Boolean!
+}
+
+type TeamsPageDocAccessFields_updatedAt {
+  create: TeamsPageDocAccessFields_updatedAt_Create
+  read: TeamsPageDocAccessFields_updatedAt_Read
+  update: TeamsPageDocAccessFields_updatedAt_Update
+  delete: TeamsPageDocAccessFields_updatedAt_Delete
+}
+
+type TeamsPageDocAccessFields_updatedAt_Create {
+  permission: Boolean!
+}
+
+type TeamsPageDocAccessFields_updatedAt_Read {
+  permission: Boolean!
+}
+
+type TeamsPageDocAccessFields_updatedAt_Update {
+  permission: Boolean!
+}
+
+type TeamsPageDocAccessFields_updatedAt_Delete {
+  permission: Boolean!
+}
+
+type TeamsPageDocAccessFields_createdAt {
+  create: TeamsPageDocAccessFields_createdAt_Create
+  read: TeamsPageDocAccessFields_createdAt_Read
+  update: TeamsPageDocAccessFields_createdAt_Update
+  delete: TeamsPageDocAccessFields_createdAt_Delete
+}
+
+type TeamsPageDocAccessFields_createdAt_Create {
+  permission: Boolean!
+}
+
+type TeamsPageDocAccessFields_createdAt_Read {
+  permission: Boolean!
+}
+
+type TeamsPageDocAccessFields_createdAt_Update {
+  permission: Boolean!
+}
+
+type TeamsPageDocAccessFields_createdAt_Delete {
+  permission: Boolean!
+}
+
+type TeamsPageReadDocAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+type TeamsPageUpdateDocAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+type ServicesPage {
+  content: ServicesPage_Content
+  seo: ServicesPage_Seo
+  others: ServicesPage_Others
+  updatedAt: DateTime
+  createdAt: DateTime
+}
+
+type ServicesPage_Content {
+  layout: [ServicesPage_Content_Layout!]
+}
+
+union ServicesPage_Content_Layout = Banner | Paragraph | ListImages | ListContent | TwoColumnContent
+
+type ServicesPage_Seo {
+  title: String
+}
+
+type ServicesPage_Others {
+  displayNewsletter: Boolean
+}
+
+type servicesPageDocAccess {
+  fields: ServicesPageDocAccessFields
+  read: ServicesPageReadDocAccess
+  update: ServicesPageUpdateDocAccess
+}
+
+type ServicesPageDocAccessFields {
+  layout: ServicesPageDocAccessFields_layout
+  title: ServicesPageDocAccessFields_title
+  displayNewsletter: ServicesPageDocAccessFields_displayNewsletter
+  updatedAt: ServicesPageDocAccessFields_updatedAt
+  createdAt: ServicesPageDocAccessFields_createdAt
+}
+
+type ServicesPageDocAccessFields_layout {
+  create: ServicesPageDocAccessFields_layout_Create
+  read: ServicesPageDocAccessFields_layout_Read
+  update: ServicesPageDocAccessFields_layout_Update
+  delete: ServicesPageDocAccessFields_layout_Delete
+}
+
+type ServicesPageDocAccessFields_layout_Create {
+  permission: Boolean!
+}
+
+type ServicesPageDocAccessFields_layout_Read {
+  permission: Boolean!
+}
+
+type ServicesPageDocAccessFields_layout_Update {
+  permission: Boolean!
+}
+
+type ServicesPageDocAccessFields_layout_Delete {
+  permission: Boolean!
+}
+
+type ServicesPageDocAccessFields_title {
+  create: ServicesPageDocAccessFields_title_Create
+  read: ServicesPageDocAccessFields_title_Read
+  update: ServicesPageDocAccessFields_title_Update
+  delete: ServicesPageDocAccessFields_title_Delete
+}
+
+type ServicesPageDocAccessFields_title_Create {
+  permission: Boolean!
+}
+
+type ServicesPageDocAccessFields_title_Read {
+  permission: Boolean!
+}
+
+type ServicesPageDocAccessFields_title_Update {
+  permission: Boolean!
+}
+
+type ServicesPageDocAccessFields_title_Delete {
+  permission: Boolean!
+}
+
+type ServicesPageDocAccessFields_displayNewsletter {
+  create: ServicesPageDocAccessFields_displayNewsletter_Create
+  read: ServicesPageDocAccessFields_displayNewsletter_Read
+  update: ServicesPageDocAccessFields_displayNewsletter_Update
+  delete: ServicesPageDocAccessFields_displayNewsletter_Delete
+}
+
+type ServicesPageDocAccessFields_displayNewsletter_Create {
+  permission: Boolean!
+}
+
+type ServicesPageDocAccessFields_displayNewsletter_Read {
+  permission: Boolean!
+}
+
+type ServicesPageDocAccessFields_displayNewsletter_Update {
+  permission: Boolean!
+}
+
+type ServicesPageDocAccessFields_displayNewsletter_Delete {
+  permission: Boolean!
+}
+
+type ServicesPageDocAccessFields_updatedAt {
+  create: ServicesPageDocAccessFields_updatedAt_Create
+  read: ServicesPageDocAccessFields_updatedAt_Read
+  update: ServicesPageDocAccessFields_updatedAt_Update
+  delete: ServicesPageDocAccessFields_updatedAt_Delete
+}
+
+type ServicesPageDocAccessFields_updatedAt_Create {
+  permission: Boolean!
+}
+
+type ServicesPageDocAccessFields_updatedAt_Read {
+  permission: Boolean!
+}
+
+type ServicesPageDocAccessFields_updatedAt_Update {
+  permission: Boolean!
+}
+
+type ServicesPageDocAccessFields_updatedAt_Delete {
+  permission: Boolean!
+}
+
+type ServicesPageDocAccessFields_createdAt {
+  create: ServicesPageDocAccessFields_createdAt_Create
+  read: ServicesPageDocAccessFields_createdAt_Read
+  update: ServicesPageDocAccessFields_createdAt_Update
+  delete: ServicesPageDocAccessFields_createdAt_Delete
+}
+
+type ServicesPageDocAccessFields_createdAt_Create {
+  permission: Boolean!
+}
+
+type ServicesPageDocAccessFields_createdAt_Read {
+  permission: Boolean!
+}
+
+type ServicesPageDocAccessFields_createdAt_Update {
+  permission: Boolean!
+}
+
+type ServicesPageDocAccessFields_createdAt_Delete {
+  permission: Boolean!
+}
+
+type ServicesPageReadDocAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+type ServicesPageUpdateDocAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
 type Access {
   canAccessAdmin: Boolean!
   users: usersAccess
@@ -9231,6 +11176,9 @@ type Access {
   solutions: solutionsAccess
   news: newsAccess
   blocks: blocksAccess
+  calendar: calendarAccess
+  files: filesAccess
+  teams: teamsAccess
   payload_preferences: payload_preferencesAccess
   home: homeAccess
   AboutUs: AboutUsAccess
@@ -9240,6 +11188,8 @@ type Access {
   contactPage: contactPageAccess
   settings: settingsAccess
   newsPage: newsPageAccess
+  teamsPage: teamsPageAccess
+  servicesPage: servicesPageAccess
 }
 
 type usersAccess {
@@ -11212,6 +13162,747 @@ type BlocksDeleteAccess {
   where: JSONObject
 }
 
+type calendarAccess {
+  fields: CalendarFields
+  create: CalendarCreateAccess
+  read: CalendarReadAccess
+  update: CalendarUpdateAccess
+  delete: CalendarDeleteAccess
+}
+
+type CalendarFields {
+  title: CalendarFields_title
+  staff: CalendarFields_staff
+  startDateTime: CalendarFields_startDateTime
+  endDateTime: CalendarFields_endDateTime
+  status: CalendarFields_status
+  description: CalendarFields_description
+  updatedAt: CalendarFields_updatedAt
+  createdAt: CalendarFields_createdAt
+}
+
+type CalendarFields_title {
+  create: CalendarFields_title_Create
+  read: CalendarFields_title_Read
+  update: CalendarFields_title_Update
+  delete: CalendarFields_title_Delete
+}
+
+type CalendarFields_title_Create {
+  permission: Boolean!
+}
+
+type CalendarFields_title_Read {
+  permission: Boolean!
+}
+
+type CalendarFields_title_Update {
+  permission: Boolean!
+}
+
+type CalendarFields_title_Delete {
+  permission: Boolean!
+}
+
+type CalendarFields_staff {
+  create: CalendarFields_staff_Create
+  read: CalendarFields_staff_Read
+  update: CalendarFields_staff_Update
+  delete: CalendarFields_staff_Delete
+}
+
+type CalendarFields_staff_Create {
+  permission: Boolean!
+}
+
+type CalendarFields_staff_Read {
+  permission: Boolean!
+}
+
+type CalendarFields_staff_Update {
+  permission: Boolean!
+}
+
+type CalendarFields_staff_Delete {
+  permission: Boolean!
+}
+
+type CalendarFields_startDateTime {
+  create: CalendarFields_startDateTime_Create
+  read: CalendarFields_startDateTime_Read
+  update: CalendarFields_startDateTime_Update
+  delete: CalendarFields_startDateTime_Delete
+}
+
+type CalendarFields_startDateTime_Create {
+  permission: Boolean!
+}
+
+type CalendarFields_startDateTime_Read {
+  permission: Boolean!
+}
+
+type CalendarFields_startDateTime_Update {
+  permission: Boolean!
+}
+
+type CalendarFields_startDateTime_Delete {
+  permission: Boolean!
+}
+
+type CalendarFields_endDateTime {
+  create: CalendarFields_endDateTime_Create
+  read: CalendarFields_endDateTime_Read
+  update: CalendarFields_endDateTime_Update
+  delete: CalendarFields_endDateTime_Delete
+}
+
+type CalendarFields_endDateTime_Create {
+  permission: Boolean!
+}
+
+type CalendarFields_endDateTime_Read {
+  permission: Boolean!
+}
+
+type CalendarFields_endDateTime_Update {
+  permission: Boolean!
+}
+
+type CalendarFields_endDateTime_Delete {
+  permission: Boolean!
+}
+
+type CalendarFields_status {
+  create: CalendarFields_status_Create
+  read: CalendarFields_status_Read
+  update: CalendarFields_status_Update
+  delete: CalendarFields_status_Delete
+}
+
+type CalendarFields_status_Create {
+  permission: Boolean!
+}
+
+type CalendarFields_status_Read {
+  permission: Boolean!
+}
+
+type CalendarFields_status_Update {
+  permission: Boolean!
+}
+
+type CalendarFields_status_Delete {
+  permission: Boolean!
+}
+
+type CalendarFields_description {
+  create: CalendarFields_description_Create
+  read: CalendarFields_description_Read
+  update: CalendarFields_description_Update
+  delete: CalendarFields_description_Delete
+}
+
+type CalendarFields_description_Create {
+  permission: Boolean!
+}
+
+type CalendarFields_description_Read {
+  permission: Boolean!
+}
+
+type CalendarFields_description_Update {
+  permission: Boolean!
+}
+
+type CalendarFields_description_Delete {
+  permission: Boolean!
+}
+
+type CalendarFields_updatedAt {
+  create: CalendarFields_updatedAt_Create
+  read: CalendarFields_updatedAt_Read
+  update: CalendarFields_updatedAt_Update
+  delete: CalendarFields_updatedAt_Delete
+}
+
+type CalendarFields_updatedAt_Create {
+  permission: Boolean!
+}
+
+type CalendarFields_updatedAt_Read {
+  permission: Boolean!
+}
+
+type CalendarFields_updatedAt_Update {
+  permission: Boolean!
+}
+
+type CalendarFields_updatedAt_Delete {
+  permission: Boolean!
+}
+
+type CalendarFields_createdAt {
+  create: CalendarFields_createdAt_Create
+  read: CalendarFields_createdAt_Read
+  update: CalendarFields_createdAt_Update
+  delete: CalendarFields_createdAt_Delete
+}
+
+type CalendarFields_createdAt_Create {
+  permission: Boolean!
+}
+
+type CalendarFields_createdAt_Read {
+  permission: Boolean!
+}
+
+type CalendarFields_createdAt_Update {
+  permission: Boolean!
+}
+
+type CalendarFields_createdAt_Delete {
+  permission: Boolean!
+}
+
+type CalendarCreateAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+type CalendarReadAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+type CalendarUpdateAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+type CalendarDeleteAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+type filesAccess {
+  fields: FilesFields
+  create: FilesCreateAccess
+  read: FilesReadAccess
+  update: FilesUpdateAccess
+  delete: FilesDeleteAccess
+}
+
+type FilesFields {
+  status: FilesFields_status
+  creator: FilesFields_creator
+  updatedAt: FilesFields_updatedAt
+  createdAt: FilesFields_createdAt
+  url: FilesFields_url
+  filename: FilesFields_filename
+  mimeType: FilesFields_mimeType
+  filesize: FilesFields_filesize
+  width: FilesFields_width
+  height: FilesFields_height
+}
+
+type FilesFields_status {
+  create: FilesFields_status_Create
+  read: FilesFields_status_Read
+  update: FilesFields_status_Update
+  delete: FilesFields_status_Delete
+}
+
+type FilesFields_status_Create {
+  permission: Boolean!
+}
+
+type FilesFields_status_Read {
+  permission: Boolean!
+}
+
+type FilesFields_status_Update {
+  permission: Boolean!
+}
+
+type FilesFields_status_Delete {
+  permission: Boolean!
+}
+
+type FilesFields_creator {
+  create: FilesFields_creator_Create
+  read: FilesFields_creator_Read
+  update: FilesFields_creator_Update
+  delete: FilesFields_creator_Delete
+}
+
+type FilesFields_creator_Create {
+  permission: Boolean!
+}
+
+type FilesFields_creator_Read {
+  permission: Boolean!
+}
+
+type FilesFields_creator_Update {
+  permission: Boolean!
+}
+
+type FilesFields_creator_Delete {
+  permission: Boolean!
+}
+
+type FilesFields_updatedAt {
+  create: FilesFields_updatedAt_Create
+  read: FilesFields_updatedAt_Read
+  update: FilesFields_updatedAt_Update
+  delete: FilesFields_updatedAt_Delete
+}
+
+type FilesFields_updatedAt_Create {
+  permission: Boolean!
+}
+
+type FilesFields_updatedAt_Read {
+  permission: Boolean!
+}
+
+type FilesFields_updatedAt_Update {
+  permission: Boolean!
+}
+
+type FilesFields_updatedAt_Delete {
+  permission: Boolean!
+}
+
+type FilesFields_createdAt {
+  create: FilesFields_createdAt_Create
+  read: FilesFields_createdAt_Read
+  update: FilesFields_createdAt_Update
+  delete: FilesFields_createdAt_Delete
+}
+
+type FilesFields_createdAt_Create {
+  permission: Boolean!
+}
+
+type FilesFields_createdAt_Read {
+  permission: Boolean!
+}
+
+type FilesFields_createdAt_Update {
+  permission: Boolean!
+}
+
+type FilesFields_createdAt_Delete {
+  permission: Boolean!
+}
+
+type FilesFields_url {
+  create: FilesFields_url_Create
+  read: FilesFields_url_Read
+  update: FilesFields_url_Update
+  delete: FilesFields_url_Delete
+}
+
+type FilesFields_url_Create {
+  permission: Boolean!
+}
+
+type FilesFields_url_Read {
+  permission: Boolean!
+}
+
+type FilesFields_url_Update {
+  permission: Boolean!
+}
+
+type FilesFields_url_Delete {
+  permission: Boolean!
+}
+
+type FilesFields_filename {
+  create: FilesFields_filename_Create
+  read: FilesFields_filename_Read
+  update: FilesFields_filename_Update
+  delete: FilesFields_filename_Delete
+}
+
+type FilesFields_filename_Create {
+  permission: Boolean!
+}
+
+type FilesFields_filename_Read {
+  permission: Boolean!
+}
+
+type FilesFields_filename_Update {
+  permission: Boolean!
+}
+
+type FilesFields_filename_Delete {
+  permission: Boolean!
+}
+
+type FilesFields_mimeType {
+  create: FilesFields_mimeType_Create
+  read: FilesFields_mimeType_Read
+  update: FilesFields_mimeType_Update
+  delete: FilesFields_mimeType_Delete
+}
+
+type FilesFields_mimeType_Create {
+  permission: Boolean!
+}
+
+type FilesFields_mimeType_Read {
+  permission: Boolean!
+}
+
+type FilesFields_mimeType_Update {
+  permission: Boolean!
+}
+
+type FilesFields_mimeType_Delete {
+  permission: Boolean!
+}
+
+type FilesFields_filesize {
+  create: FilesFields_filesize_Create
+  read: FilesFields_filesize_Read
+  update: FilesFields_filesize_Update
+  delete: FilesFields_filesize_Delete
+}
+
+type FilesFields_filesize_Create {
+  permission: Boolean!
+}
+
+type FilesFields_filesize_Read {
+  permission: Boolean!
+}
+
+type FilesFields_filesize_Update {
+  permission: Boolean!
+}
+
+type FilesFields_filesize_Delete {
+  permission: Boolean!
+}
+
+type FilesFields_width {
+  create: FilesFields_width_Create
+  read: FilesFields_width_Read
+  update: FilesFields_width_Update
+  delete: FilesFields_width_Delete
+}
+
+type FilesFields_width_Create {
+  permission: Boolean!
+}
+
+type FilesFields_width_Read {
+  permission: Boolean!
+}
+
+type FilesFields_width_Update {
+  permission: Boolean!
+}
+
+type FilesFields_width_Delete {
+  permission: Boolean!
+}
+
+type FilesFields_height {
+  create: FilesFields_height_Create
+  read: FilesFields_height_Read
+  update: FilesFields_height_Update
+  delete: FilesFields_height_Delete
+}
+
+type FilesFields_height_Create {
+  permission: Boolean!
+}
+
+type FilesFields_height_Read {
+  permission: Boolean!
+}
+
+type FilesFields_height_Update {
+  permission: Boolean!
+}
+
+type FilesFields_height_Delete {
+  permission: Boolean!
+}
+
+type FilesCreateAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+type FilesReadAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+type FilesUpdateAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+type FilesDeleteAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+type teamsAccess {
+  fields: TeamsFields
+  create: TeamsCreateAccess
+  read: TeamsReadAccess
+  update: TeamsUpdateAccess
+  delete: TeamsDeleteAccess
+}
+
+type TeamsFields {
+  title: TeamsFields_title
+  name: TeamsFields_name
+  email: TeamsFields_email
+  phone: TeamsFields_phone
+  slug: TeamsFields_slug
+  thumbnail: TeamsFields_thumbnail
+  description: TeamsFields_description
+  updatedAt: TeamsFields_updatedAt
+  createdAt: TeamsFields_createdAt
+}
+
+type TeamsFields_title {
+  create: TeamsFields_title_Create
+  read: TeamsFields_title_Read
+  update: TeamsFields_title_Update
+  delete: TeamsFields_title_Delete
+}
+
+type TeamsFields_title_Create {
+  permission: Boolean!
+}
+
+type TeamsFields_title_Read {
+  permission: Boolean!
+}
+
+type TeamsFields_title_Update {
+  permission: Boolean!
+}
+
+type TeamsFields_title_Delete {
+  permission: Boolean!
+}
+
+type TeamsFields_name {
+  create: TeamsFields_name_Create
+  read: TeamsFields_name_Read
+  update: TeamsFields_name_Update
+  delete: TeamsFields_name_Delete
+}
+
+type TeamsFields_name_Create {
+  permission: Boolean!
+}
+
+type TeamsFields_name_Read {
+  permission: Boolean!
+}
+
+type TeamsFields_name_Update {
+  permission: Boolean!
+}
+
+type TeamsFields_name_Delete {
+  permission: Boolean!
+}
+
+type TeamsFields_email {
+  create: TeamsFields_email_Create
+  read: TeamsFields_email_Read
+  update: TeamsFields_email_Update
+  delete: TeamsFields_email_Delete
+}
+
+type TeamsFields_email_Create {
+  permission: Boolean!
+}
+
+type TeamsFields_email_Read {
+  permission: Boolean!
+}
+
+type TeamsFields_email_Update {
+  permission: Boolean!
+}
+
+type TeamsFields_email_Delete {
+  permission: Boolean!
+}
+
+type TeamsFields_phone {
+  create: TeamsFields_phone_Create
+  read: TeamsFields_phone_Read
+  update: TeamsFields_phone_Update
+  delete: TeamsFields_phone_Delete
+}
+
+type TeamsFields_phone_Create {
+  permission: Boolean!
+}
+
+type TeamsFields_phone_Read {
+  permission: Boolean!
+}
+
+type TeamsFields_phone_Update {
+  permission: Boolean!
+}
+
+type TeamsFields_phone_Delete {
+  permission: Boolean!
+}
+
+type TeamsFields_slug {
+  create: TeamsFields_slug_Create
+  read: TeamsFields_slug_Read
+  update: TeamsFields_slug_Update
+  delete: TeamsFields_slug_Delete
+}
+
+type TeamsFields_slug_Create {
+  permission: Boolean!
+}
+
+type TeamsFields_slug_Read {
+  permission: Boolean!
+}
+
+type TeamsFields_slug_Update {
+  permission: Boolean!
+}
+
+type TeamsFields_slug_Delete {
+  permission: Boolean!
+}
+
+type TeamsFields_thumbnail {
+  create: TeamsFields_thumbnail_Create
+  read: TeamsFields_thumbnail_Read
+  update: TeamsFields_thumbnail_Update
+  delete: TeamsFields_thumbnail_Delete
+}
+
+type TeamsFields_thumbnail_Create {
+  permission: Boolean!
+}
+
+type TeamsFields_thumbnail_Read {
+  permission: Boolean!
+}
+
+type TeamsFields_thumbnail_Update {
+  permission: Boolean!
+}
+
+type TeamsFields_thumbnail_Delete {
+  permission: Boolean!
+}
+
+type TeamsFields_description {
+  create: TeamsFields_description_Create
+  read: TeamsFields_description_Read
+  update: TeamsFields_description_Update
+  delete: TeamsFields_description_Delete
+}
+
+type TeamsFields_description_Create {
+  permission: Boolean!
+}
+
+type TeamsFields_description_Read {
+  permission: Boolean!
+}
+
+type TeamsFields_description_Update {
+  permission: Boolean!
+}
+
+type TeamsFields_description_Delete {
+  permission: Boolean!
+}
+
+type TeamsFields_updatedAt {
+  create: TeamsFields_updatedAt_Create
+  read: TeamsFields_updatedAt_Read
+  update: TeamsFields_updatedAt_Update
+  delete: TeamsFields_updatedAt_Delete
+}
+
+type TeamsFields_updatedAt_Create {
+  permission: Boolean!
+}
+
+type TeamsFields_updatedAt_Read {
+  permission: Boolean!
+}
+
+type TeamsFields_updatedAt_Update {
+  permission: Boolean!
+}
+
+type TeamsFields_updatedAt_Delete {
+  permission: Boolean!
+}
+
+type TeamsFields_createdAt {
+  create: TeamsFields_createdAt_Create
+  read: TeamsFields_createdAt_Read
+  update: TeamsFields_createdAt_Update
+  delete: TeamsFields_createdAt_Delete
+}
+
+type TeamsFields_createdAt_Create {
+  permission: Boolean!
+}
+
+type TeamsFields_createdAt_Read {
+  permission: Boolean!
+}
+
+type TeamsFields_createdAt_Update {
+  permission: Boolean!
+}
+
+type TeamsFields_createdAt_Delete {
+  permission: Boolean!
+}
+
+type TeamsCreateAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+type TeamsReadAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+type TeamsUpdateAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+type TeamsDeleteAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
 type payload_preferencesAccess {
   fields: PayloadPreferencesFields
   create: PayloadPreferencesCreateAccess
@@ -12939,6 +15630,284 @@ type NewsPageUpdateAccess {
   where: JSONObject
 }
 
+type teamsPageAccess {
+  fields: TeamsPageFields
+  read: TeamsPageReadAccess
+  update: TeamsPageUpdateAccess
+}
+
+type TeamsPageFields {
+  subTitle: TeamsPageFields_subTitle
+  title: TeamsPageFields_title
+  displayNewsletter: TeamsPageFields_displayNewsletter
+  updatedAt: TeamsPageFields_updatedAt
+  createdAt: TeamsPageFields_createdAt
+}
+
+type TeamsPageFields_subTitle {
+  create: TeamsPageFields_subTitle_Create
+  read: TeamsPageFields_subTitle_Read
+  update: TeamsPageFields_subTitle_Update
+  delete: TeamsPageFields_subTitle_Delete
+}
+
+type TeamsPageFields_subTitle_Create {
+  permission: Boolean!
+}
+
+type TeamsPageFields_subTitle_Read {
+  permission: Boolean!
+}
+
+type TeamsPageFields_subTitle_Update {
+  permission: Boolean!
+}
+
+type TeamsPageFields_subTitle_Delete {
+  permission: Boolean!
+}
+
+type TeamsPageFields_title {
+  create: TeamsPageFields_title_Create
+  read: TeamsPageFields_title_Read
+  update: TeamsPageFields_title_Update
+  delete: TeamsPageFields_title_Delete
+}
+
+type TeamsPageFields_title_Create {
+  permission: Boolean!
+}
+
+type TeamsPageFields_title_Read {
+  permission: Boolean!
+}
+
+type TeamsPageFields_title_Update {
+  permission: Boolean!
+}
+
+type TeamsPageFields_title_Delete {
+  permission: Boolean!
+}
+
+type TeamsPageFields_displayNewsletter {
+  create: TeamsPageFields_displayNewsletter_Create
+  read: TeamsPageFields_displayNewsletter_Read
+  update: TeamsPageFields_displayNewsletter_Update
+  delete: TeamsPageFields_displayNewsletter_Delete
+}
+
+type TeamsPageFields_displayNewsletter_Create {
+  permission: Boolean!
+}
+
+type TeamsPageFields_displayNewsletter_Read {
+  permission: Boolean!
+}
+
+type TeamsPageFields_displayNewsletter_Update {
+  permission: Boolean!
+}
+
+type TeamsPageFields_displayNewsletter_Delete {
+  permission: Boolean!
+}
+
+type TeamsPageFields_updatedAt {
+  create: TeamsPageFields_updatedAt_Create
+  read: TeamsPageFields_updatedAt_Read
+  update: TeamsPageFields_updatedAt_Update
+  delete: TeamsPageFields_updatedAt_Delete
+}
+
+type TeamsPageFields_updatedAt_Create {
+  permission: Boolean!
+}
+
+type TeamsPageFields_updatedAt_Read {
+  permission: Boolean!
+}
+
+type TeamsPageFields_updatedAt_Update {
+  permission: Boolean!
+}
+
+type TeamsPageFields_updatedAt_Delete {
+  permission: Boolean!
+}
+
+type TeamsPageFields_createdAt {
+  create: TeamsPageFields_createdAt_Create
+  read: TeamsPageFields_createdAt_Read
+  update: TeamsPageFields_createdAt_Update
+  delete: TeamsPageFields_createdAt_Delete
+}
+
+type TeamsPageFields_createdAt_Create {
+  permission: Boolean!
+}
+
+type TeamsPageFields_createdAt_Read {
+  permission: Boolean!
+}
+
+type TeamsPageFields_createdAt_Update {
+  permission: Boolean!
+}
+
+type TeamsPageFields_createdAt_Delete {
+  permission: Boolean!
+}
+
+type TeamsPageReadAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+type TeamsPageUpdateAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+type servicesPageAccess {
+  fields: ServicesPageFields
+  read: ServicesPageReadAccess
+  update: ServicesPageUpdateAccess
+}
+
+type ServicesPageFields {
+  layout: ServicesPageFields_layout
+  title: ServicesPageFields_title
+  displayNewsletter: ServicesPageFields_displayNewsletter
+  updatedAt: ServicesPageFields_updatedAt
+  createdAt: ServicesPageFields_createdAt
+}
+
+type ServicesPageFields_layout {
+  create: ServicesPageFields_layout_Create
+  read: ServicesPageFields_layout_Read
+  update: ServicesPageFields_layout_Update
+  delete: ServicesPageFields_layout_Delete
+}
+
+type ServicesPageFields_layout_Create {
+  permission: Boolean!
+}
+
+type ServicesPageFields_layout_Read {
+  permission: Boolean!
+}
+
+type ServicesPageFields_layout_Update {
+  permission: Boolean!
+}
+
+type ServicesPageFields_layout_Delete {
+  permission: Boolean!
+}
+
+type ServicesPageFields_title {
+  create: ServicesPageFields_title_Create
+  read: ServicesPageFields_title_Read
+  update: ServicesPageFields_title_Update
+  delete: ServicesPageFields_title_Delete
+}
+
+type ServicesPageFields_title_Create {
+  permission: Boolean!
+}
+
+type ServicesPageFields_title_Read {
+  permission: Boolean!
+}
+
+type ServicesPageFields_title_Update {
+  permission: Boolean!
+}
+
+type ServicesPageFields_title_Delete {
+  permission: Boolean!
+}
+
+type ServicesPageFields_displayNewsletter {
+  create: ServicesPageFields_displayNewsletter_Create
+  read: ServicesPageFields_displayNewsletter_Read
+  update: ServicesPageFields_displayNewsletter_Update
+  delete: ServicesPageFields_displayNewsletter_Delete
+}
+
+type ServicesPageFields_displayNewsletter_Create {
+  permission: Boolean!
+}
+
+type ServicesPageFields_displayNewsletter_Read {
+  permission: Boolean!
+}
+
+type ServicesPageFields_displayNewsletter_Update {
+  permission: Boolean!
+}
+
+type ServicesPageFields_displayNewsletter_Delete {
+  permission: Boolean!
+}
+
+type ServicesPageFields_updatedAt {
+  create: ServicesPageFields_updatedAt_Create
+  read: ServicesPageFields_updatedAt_Read
+  update: ServicesPageFields_updatedAt_Update
+  delete: ServicesPageFields_updatedAt_Delete
+}
+
+type ServicesPageFields_updatedAt_Create {
+  permission: Boolean!
+}
+
+type ServicesPageFields_updatedAt_Read {
+  permission: Boolean!
+}
+
+type ServicesPageFields_updatedAt_Update {
+  permission: Boolean!
+}
+
+type ServicesPageFields_updatedAt_Delete {
+  permission: Boolean!
+}
+
+type ServicesPageFields_createdAt {
+  create: ServicesPageFields_createdAt_Create
+  read: ServicesPageFields_createdAt_Read
+  update: ServicesPageFields_createdAt_Update
+  delete: ServicesPageFields_createdAt_Delete
+}
+
+type ServicesPageFields_createdAt_Create {
+  permission: Boolean!
+}
+
+type ServicesPageFields_createdAt_Read {
+  permission: Boolean!
+}
+
+type ServicesPageFields_createdAt_Update {
+  permission: Boolean!
+}
+
+type ServicesPageFields_createdAt_Delete {
+  permission: Boolean!
+}
+
+type ServicesPageReadAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+type ServicesPageUpdateAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
 type Mutation {
   createUser(data: mutationUserInput!, draft: Boolean, locale: LocaleInputType): User
   updateUser(id: String!, autosave: Boolean, data: mutationUserUpdateInput!, draft: Boolean, locale: LocaleInputType): User
@@ -12971,6 +15940,15 @@ type Mutation {
   createBlock(data: mutationBlockInput!, draft: Boolean, locale: LocaleInputType): Block
   updateBlock(id: String!, autosave: Boolean, data: mutationBlockUpdateInput!, draft: Boolean, locale: LocaleInputType): Block
   deleteBlock(id: String!): Block
+  createCalendar(data: mutationCalendarInput!, draft: Boolean, locale: LocaleInputType): Calendar
+  updateCalendar(id: String!, autosave: Boolean, data: mutationCalendarUpdateInput!, draft: Boolean, locale: LocaleInputType): Calendar
+  deleteCalendar(id: String!): Calendar
+  createFile(data: mutationFileInput!, draft: Boolean, locale: LocaleInputType): File
+  updateFile(id: String!, autosave: Boolean, data: mutationFileUpdateInput!, draft: Boolean, locale: LocaleInputType): File
+  deleteFile(id: String!): File
+  createTeam(data: mutationTeamInput!, draft: Boolean, locale: LocaleInputType): Team
+  updateTeam(id: String!, autosave: Boolean, data: mutationTeamUpdateInput!, draft: Boolean, locale: LocaleInputType): Team
+  deleteTeam(id: String!): Team
   createPayloadPreference(data: mutationPayloadPreferenceInput!, draft: Boolean, locale: LocaleInputType): PayloadPreference
   updatePayloadPreference(id: String!, autosave: Boolean, data: mutationPayloadPreferenceUpdateInput!, draft: Boolean, locale: LocaleInputType): PayloadPreference
   deletePayloadPreference(id: String!): PayloadPreference
@@ -12982,6 +15960,8 @@ type Mutation {
   updateContactPage(data: mutationContactPageInput!, draft: Boolean, locale: LocaleInputType): ContactPage
   updateSetting(data: mutationSettingInput!, draft: Boolean, locale: LocaleInputType): Setting
   updateNewsPage(data: mutationNewsPageInput!, draft: Boolean, locale: LocaleInputType): NewsPage
+  updateTeamsPage(data: mutationTeamsPageInput!, draft: Boolean, locale: LocaleInputType): TeamsPage
+  updateServicesPage(data: mutationServicesPageInput!, draft: Boolean, locale: LocaleInputType): ServicesPage
 }
 
 input mutationUserInput {
@@ -13003,6 +15983,7 @@ input mutationUserInput {
 enum User_roles_MutationInput {
   admin
   user
+  staff
 }
 
 input mutationUserUpdateInput {
@@ -13024,6 +16005,7 @@ input mutationUserUpdateInput {
 enum UserUpdate_roles_MutationInput {
   admin
   user
+  staff
 }
 
 type usersRefreshedUser {
@@ -13041,6 +16023,7 @@ type usersJWT {
 enum usersJWT_roles {
   admin
   user
+  staff
 }
 
 type usersLoginResult {
@@ -13272,6 +16255,98 @@ input mutationBlockUpdateInput {
 
 enum BlockUpdate_type_MutationInput {
   email
+}
+
+input mutationCalendarInput {
+  title: String
+  staff: String
+  startDateTime: String
+  endDateTime: String
+  status: Calendar_status_MutationInput
+  description: JSON
+  updatedAt: String
+  createdAt: String
+}
+
+enum Calendar_status_MutationInput {
+  public
+  private
+}
+
+input mutationCalendarUpdateInput {
+  title: String
+  staff: String
+  startDateTime: String
+  endDateTime: String
+  status: CalendarUpdate_status_MutationInput
+  description: JSON
+  updatedAt: String
+  createdAt: String
+}
+
+enum CalendarUpdate_status_MutationInput {
+  public
+  private
+}
+
+input mutationFileInput {
+  status: File_status_MutationInput
+  creator: String
+  updatedAt: String
+  createdAt: String
+  url: String
+  filename: String
+  mimeType: String
+  filesize: Float
+  width: Float
+  height: Float
+}
+
+enum File_status_MutationInput {
+  public
+  private
+}
+
+input mutationFileUpdateInput {
+  status: FileUpdate_status_MutationInput
+  creator: String
+  updatedAt: String
+  createdAt: String
+  url: String
+  filename: String
+  mimeType: String
+  filesize: Float
+  width: Float
+  height: Float
+}
+
+enum FileUpdate_status_MutationInput {
+  public
+  private
+}
+
+input mutationTeamInput {
+  title: String
+  name: String
+  email: String
+  phone: String
+  slug: String
+  thumbnail: String
+  description: JSON
+  updatedAt: String
+  createdAt: String
+}
+
+input mutationTeamUpdateInput {
+  title: String
+  name: String
+  email: String
+  phone: String
+  slug: String
+  thumbnail: String
+  description: JSON
+  updatedAt: String
+  createdAt: String
 }
 
 input mutationPayloadPreferenceInput {
@@ -13507,5 +16582,46 @@ input mutationNewsPage_SeoInput {
 }
 
 input mutationNewsPage_OthersInput {
+  displayNewsletter: Boolean
+}
+
+input mutationTeamsPageInput {
+  content: mutationTeamsPage_ContentInput
+  seo: mutationTeamsPage_SeoInput
+  others: mutationTeamsPage_OthersInput
+  updatedAt: String
+  createdAt: String
+}
+
+input mutationTeamsPage_ContentInput {
+  subTitle: String
+  title: String
+}
+
+input mutationTeamsPage_SeoInput {
+  title: String
+}
+
+input mutationTeamsPage_OthersInput {
+  displayNewsletter: Boolean
+}
+
+input mutationServicesPageInput {
+  content: mutationServicesPage_ContentInput
+  seo: mutationServicesPage_SeoInput
+  others: mutationServicesPage_OthersInput
+  updatedAt: String
+  createdAt: String
+}
+
+input mutationServicesPage_ContentInput {
+  layout: JSON
+}
+
+input mutationServicesPage_SeoInput {
+  title: String
+}
+
+input mutationServicesPage_OthersInput {
   displayNewsletter: Boolean
 }

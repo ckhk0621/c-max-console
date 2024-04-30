@@ -1,7 +1,7 @@
 import { GlobalConfig } from "payload/types";
 
-const NewsPage: GlobalConfig = {
-  slug: "newsPage",
+const TeamsPage: GlobalConfig = {
+  slug: "teamsPage",
   admin: {
     group: "Pages",
   },
@@ -55,4 +55,4 @@ const NewsPage: GlobalConfig = {
   ],
 };
 
-export default NewsPage;
+export default TeamsPage;

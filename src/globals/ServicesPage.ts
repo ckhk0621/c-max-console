@@ -1,7 +1,12 @@
 import { GlobalConfig } from "payload/types";
+import BannerBlock from "../blocks/banner";
+import ParagraphBlock from "../blocks/paragraph";
+import ListImagesBlock from "../blocks/listImages";
+import ListContentBlock from "../blocks/listContent";
+import twoColumnContentBlock from "../blocks/twoColumnContent";
 
-const NewsPage: GlobalConfig = {
-  slug: "newsPage",
+const ServicesPage: GlobalConfig = {
+  slug: "servicesPage",
   admin: {
     group: "Pages",
   },
@@ -17,13 +22,15 @@ const NewsPage: GlobalConfig = {
           label: "CONTENT",
           fields: [
             {
-              name: "subTitle",
-              type: "text",
-              localized: true,
-            },
-            {
-              name: "title",
-              type: "text",
+              name: "layout",
+              type: "blocks",
+              blocks: [
+                BannerBlock,
+                ParagraphBlock,
+                ListImagesBlock,
+                ListContentBlock,
+                twoColumnContentBlock
+              ],
               localized: true,
             },
           ],
@@ -55,4 +62,4 @@ const NewsPage: GlobalConfig = {
   ],
 };
 
-export default NewsPage;
+export default ServicesPage;

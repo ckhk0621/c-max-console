@@ -14,6 +14,9 @@ import Blocks from './collections/Blocks'
 import Products from './collections/Products'
 import Solutions from './collections/Solutions'
 import News from './collections/News'
+import Calendar from './collections/Calendar'
+import Files from './collections/Files'
+import Teams from './collections/Teams'
 
 import Settings from './globals/Settings';
 import Home from './globals/Home';
@@ -23,6 +26,8 @@ import SolutionsPage from './globals/SolutionsPage'
 import ContactPage from './globals/ContactPage'
 import ShowcasePage from './globals/ShowcasePage'
 import NewsPage from './globals/NewsPage'
+import TeamsPage from './globals/TeamsPage'
+import ServicesPage from './globals/ServicesPage'
 
 import { cloudStorage } from '@payloadcms/plugin-cloud-storage';
 import { s3Adapter } from '@payloadcms/plugin-cloud-storage/s3';
@@ -33,7 +38,7 @@ export default buildConfig({
     bundler: webpackBundler(),
   },
   editor: slateEditor({}),
-  collections: [Users, Categories, Media, Pages, Products, Solutions, News, Blocks],
+  collections: [Users, Categories, Media, Pages, Products, Solutions, News, Blocks, Calendar, Files, Teams],
   globals: [
     Home,
     AboutUs,
@@ -42,7 +47,9 @@ export default buildConfig({
     ShowcasePage,
     ContactPage,
     Settings,
-    NewsPage
+    NewsPage,
+    TeamsPage,
+    ServicesPage
   ],
   typescript: {
     outputFile: path.resolve(__dirname, 'payload-types.ts'),
@@ -87,6 +94,11 @@ export default buildConfig({
       },
     })
   ],
+  upload:{
+    limits: {
+      fileSize: 20000000, // 20MB, written in bytes
+    },
+  },
   db: mongooseAdapter({
     url: process.env.DATABASE_URI,
   }),

@@ -16,6 +16,9 @@ export interface Config {
     solutions: Solution;
     news: News;
     blocks: Block;
+    calendar: Calendar;
+    files: File;
+    teams: Team;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
@@ -28,6 +31,8 @@ export interface Config {
     contactPage: ContactPage;
     settings: Setting;
     newsPage: NewsPage;
+    teamsPage: TeamsPage;
+    servicesPage: ServicesPage;
   };
 }
 /**
@@ -38,7 +43,7 @@ export interface User {
   id: string;
   firstName?: string | null;
   lastName?: string | null;
-  roles?: ('admin' | 'user')[] | null;
+  roles?: ('admin' | 'user' | 'staff')[] | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -177,6 +182,62 @@ export interface Block {
     [k: string]: unknown;
   }[];
   email?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "calendar".
+ */
+export interface Calendar {
+  id: string;
+  title: string;
+  staff: string | User;
+  startDateTime?: string | null;
+  endDateTime?: string | null;
+  status?: ('public' | 'private') | null;
+  description?:
+    | {
+        [k: string]: unknown;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "files".
+ */
+export interface File {
+  id: string;
+  status?: ('public' | 'private') | null;
+  creator?: (string | null) | User;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "teams".
+ */
+export interface Team {
+  id: string;
+  title?: string | null;
+  name?: string | null;
+  email?: string | null;
+  phone?: string | null;
+  slug?: string | null;
+  thumbnail?: string | Media | null;
+  description?:
+    | {
+        [k: string]: unknown;
+      }[]
+    | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -612,6 +673,113 @@ export interface NewsPage {
   content: {
     subTitle?: string | null;
     title?: string | null;
+  };
+  seo: {
+    title?: string | null;
+  };
+  others: {
+    displayNewsletter?: boolean | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "teamsPage".
+ */
+export interface TeamsPage {
+  id: string;
+  content: {
+    subTitle?: string | null;
+    title?: string | null;
+  };
+  seo: {
+    title?: string | null;
+  };
+  others: {
+    displayNewsletter?: boolean | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "servicesPage".
+ */
+export interface ServicesPage {
+  id: string;
+  content: {
+    layout?:
+      | (
+          | {
+              image: string | Media;
+              title?: string | null;
+              id?: string | null;
+              blockName?: string | null;
+              blockType: 'banner';
+            }
+          | {
+              title?: string | null;
+              content?:
+                | {
+                    [k: string]: unknown;
+                  }[]
+                | null;
+              id?: string | null;
+              blockName?: string | null;
+              blockType: 'paragraph';
+            }
+          | {
+              title?: string | null;
+              images?:
+                | {
+                    image: string | Media;
+                    id?: string | null;
+                  }[]
+                | null;
+              id?: string | null;
+              blockName?: string | null;
+              blockType: 'listImages';
+            }
+          | {
+              subTitle?: string | null;
+              title?: string | null;
+              list?:
+                | {
+                    title?: string | null;
+                    link?: (string | null) | Page;
+                    description?:
+                      | {
+                          [k: string]: unknown;
+                        }[]
+                      | null;
+                    image?: string | Media | null;
+                    id?: string | null;
+                  }[]
+                | null;
+              id?: string | null;
+              blockName?: string | null;
+              blockType: 'listContent';
+            }
+          | {
+              image: string | Media;
+              imagePosition?: ('left' | 'right') | null;
+              subTitle?: string | null;
+              title?: string | null;
+              highlight?: string | null;
+              content?:
+                | {
+                    [k: string]: unknown;
+                  }[]
+                | null;
+              button?: string | null;
+              link?: (string | null) | Page;
+              id?: string | null;
+              blockName?: string | null;
+              blockType: 'twoColumnContent';
+            }
+        )[]
+      | null;
   };
   seo: {
     title?: string | null;

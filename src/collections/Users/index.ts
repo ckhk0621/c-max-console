@@ -52,6 +52,10 @@ const Users: CollectionConfig = {
           label: 'User',
           value: 'user',
         },
+        {
+          label: 'Staff',
+          value: 'staff',
+        }
       ],
     }
   ],
