@@ -86,8 +86,8 @@ export default buildConfig({
             config: {
               // endpoint: "https://c-max-bucket.s3.ap-east-1.amazonaws.com",
               credentials: {
-                accessKeyId: "AKIA4HWDFA76EGIL3MMU",
-                secretAccessKey: "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",
+                accessKeyId: process.env.S3_ACCESS_KEY,
+                secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
               },
               region: "ap-east-1",
             },
