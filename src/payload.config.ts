@@ -105,7 +105,7 @@ export default buildConfig({
   db: mongooseAdapter({
     url: process.env.DATABASE_URI,
   }),
-  // cors: [process.env.PAYLOAD_PUBLIC_SITE_URL],
+  cors: [process.env.PAYLOAD_PUBLIC_SITE_URL],
   // csrf: [process.env.PAYLOAD_PUBLIC_SITE_URL],
   // cookiePrefix: 'c-max',
   localization: {
