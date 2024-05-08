@@ -68,8 +68,27 @@ const Calendar: CollectionConfig = {
       ],
     },
     {
+      name: "review",
+      type: "select",
+      defaultValue: "pending",
+      options: [
+        {
+          label: "Approved",
+          value: "approved",
+        },
+        {
+          label: "Pending",
+          value: "pending",
+        },
+        {
+          label: "Rejected",
+          value: "rejected",
+        },
+      ],
+    },
+    {
       name: "description",
-      type: "richText",
+      type: "textarea",
       localized: true,
     },
   ],
@@ -79,6 +98,17 @@ export const calendarCustomGraphQL: Config["graphQL"] = {
   queries: (GraphQL, payload) => {
     return {
       GetCalendar: {
+        ...payload.Query.fields.Calendars,
+        resolve: async (parent, input, context, info) => {
+          return payload.Query.fields.Calendars.resolve(
+            parent,
+            input,
+            context,
+            info
+          )
+        }
+      },
+      MeCalendar: {
         ...payload.Query.fields.Calendars,
         resolve: async (parent, input, context, info) => {
           return payload.Query.fields.Calendars.resolve(

@@ -67,6 +67,7 @@ type Query {
   docAccessTechnicalSupportPage: TechnicalSupportPageDocAccess
   Access: Access
   GetCalendar(draft: Boolean, where: Calendar_where, fallbackLocale: FallbackLocaleInputType, locale: LocaleInputType, limit: Int, page: Int, sort: String): Calendars
+  MeCalendar(draft: Boolean, where: Calendar_where, fallbackLocale: FallbackLocaleInputType, locale: LocaleInputType, limit: Int, page: Int, sort: String): Calendars
 }
 
 type User {
@@ -4736,7 +4737,8 @@ type Calendar {
   startDateTime: DateTime
   endDateTime: DateTime
   status: Calendar_status
-  description(depth: Int): JSON
+  review: Calendar_review
+  description: String
   updatedAt: DateTime
   createdAt: DateTime
 }
@@ -4744,6 +4746,12 @@ type Calendar {
 enum Calendar_status {
   public
   private
+}
+
+enum Calendar_review {
+  approved
+  pending
+  rejected
 }
 
 type Calendars {
@@ -4766,6 +4774,7 @@ input Calendar_where {
   startDateTime: Calendar_startDateTime_operator
   endDateTime: Calendar_endDateTime_operator
   status: Calendar_status_operator
+  review: Calendar_review_operator
   description: Calendar_description_operator
   updatedAt: Calendar_updatedAt_operator
   createdAt: Calendar_createdAt_operator
@@ -4828,11 +4837,26 @@ enum Calendar_status_Input {
   private
 }
 
+input Calendar_review_operator {
+  equals: Calendar_review_Input
+  not_equals: Calendar_review_Input
+  in: [Calendar_review_Input]
+  not_in: [Calendar_review_Input]
+  all: [Calendar_review_Input]
+  exists: Boolean
+}
+
+enum Calendar_review_Input {
+  approved
+  pending
+  rejected
+}
+
 input Calendar_description_operator {
-  equals: JSON
-  not_equals: JSON
-  like: JSON
-  contains: JSON
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
   exists: Boolean
 }
 
@@ -4875,6 +4899,7 @@ input Calendar_where_and {
   startDateTime: Calendar_startDateTime_operator
   endDateTime: Calendar_endDateTime_operator
   status: Calendar_status_operator
+  review: Calendar_review_operator
   description: Calendar_description_operator
   updatedAt: Calendar_updatedAt_operator
   createdAt: Calendar_createdAt_operator
@@ -4889,6 +4914,7 @@ input Calendar_where_or {
   startDateTime: Calendar_startDateTime_operator
   endDateTime: Calendar_endDateTime_operator
   status: Calendar_status_operator
+  review: Calendar_review_operator
   description: Calendar_description_operator
   updatedAt: Calendar_updatedAt_operator
   createdAt: Calendar_createdAt_operator
@@ -4911,6 +4937,7 @@ type CalendarDocAccessFields {
   startDateTime: CalendarDocAccessFields_startDateTime
   endDateTime: CalendarDocAccessFields_endDateTime
   status: CalendarDocAccessFields_status
+  review: CalendarDocAccessFields_review
   description: CalendarDocAccessFields_description
   updatedAt: CalendarDocAccessFields_updatedAt
   createdAt: CalendarDocAccessFields_createdAt
@@ -5028,6 +5055,29 @@ type CalendarDocAccessFields_status_Update {
 }
 
 type CalendarDocAccessFields_status_Delete {
+  permission: Boolean!
+}
+
+type CalendarDocAccessFields_review {
+  create: CalendarDocAccessFields_review_Create
+  read: CalendarDocAccessFields_review_Read
+  update: CalendarDocAccessFields_review_Update
+  delete: CalendarDocAccessFields_review_Delete
+}
+
+type CalendarDocAccessFields_review_Create {
+  permission: Boolean!
+}
+
+type CalendarDocAccessFields_review_Read {
+  permission: Boolean!
+}
+
+type CalendarDocAccessFields_review_Update {
+  permission: Boolean!
+}
+
+type CalendarDocAccessFields_review_Delete {
   permission: Boolean!
 }
 
@@ -14005,6 +14055,7 @@ type CalendarFields {
   startDateTime: CalendarFields_startDateTime
   endDateTime: CalendarFields_endDateTime
   status: CalendarFields_status
+  review: CalendarFields_review
   description: CalendarFields_description
   updatedAt: CalendarFields_updatedAt
   createdAt: CalendarFields_createdAt
@@ -14122,6 +14173,29 @@ type CalendarFields_status_Update {
 }
 
 type CalendarFields_status_Delete {
+  permission: Boolean!
+}
+
+type CalendarFields_review {
+  create: CalendarFields_review_Create
+  read: CalendarFields_review_Read
+  update: CalendarFields_review_Update
+  delete: CalendarFields_review_Delete
+}
+
+type CalendarFields_review_Create {
+  permission: Boolean!
+}
+
+type CalendarFields_review_Read {
+  permission: Boolean!
+}
+
+type CalendarFields_review_Update {
+  permission: Boolean!
+}
+
+type CalendarFields_review_Delete {
   permission: Boolean!
 }
 
@@ -17687,7 +17761,8 @@ input mutationCalendarInput {
   startDateTime: String
   endDateTime: String
   status: Calendar_status_MutationInput
-  description: JSON
+  review: Calendar_review_MutationInput
+  description: String
   updatedAt: String
   createdAt: String
 }
@@ -17697,13 +17772,20 @@ enum Calendar_status_MutationInput {
   private
 }
 
+enum Calendar_review_MutationInput {
+  approved
+  pending
+  rejected
+}
+
 input mutationCalendarUpdateInput {
   title: String
   staff: String
   startDateTime: String
   endDateTime: String
   status: CalendarUpdate_status_MutationInput
-  description: JSON
+  review: CalendarUpdate_review_MutationInput
+  description: String
   updatedAt: String
   createdAt: String
 }
@@ -17711,6 +17793,12 @@ input mutationCalendarUpdateInput {
 enum CalendarUpdate_status_MutationInput {
   public
   private
+}
+
+enum CalendarUpdate_review_MutationInput {
+  approved
+  pending
+  rejected
 }
 
 input mutationFileInput {

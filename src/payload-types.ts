@@ -198,11 +198,8 @@ export interface Calendar {
   startDateTime?: string | null;
   endDateTime?: string | null;
   status?: ('public' | 'private') | null;
-  description?:
-    | {
-        [k: string]: unknown;
-      }[]
-    | null;
+  review?: ('approved' | 'pending' | 'rejected') | null;
+  description?: string | null;
   updatedAt: string;
   createdAt: string;
 }
