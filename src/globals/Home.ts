@@ -15,6 +15,7 @@ const Home: GlobalConfig = {
   access: {
     read: () => true,
   },
+  label: "Home Page",
   fields: [
     {
       type: "tabs",

@@ -22,7 +22,33 @@ const ContactPage: GlobalConfig = {
               localized: true,
             },
             {
+              name: "contentTitle",
+              type: "text",
+              localized: true,
+            },
+            {
               name: "content",
+              type: "richText",
+              localized: true,
+            },
+            {
+              name: "address",
+              type: "array",
+              fields: [
+                {
+                  name: "title",
+                  type: "text",
+                  localized: true,
+                },
+                {
+                  name: "content",
+                  type: "richText",
+                  localized: true,
+                },
+              ]
+            },
+            {
+              name: "additionalInfo",
               type: "richText",
               localized: true,
             },

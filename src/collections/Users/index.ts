@@ -3,22 +3,22 @@ import { admins } from '../access/admins'
 import adminsAndUser from '../access/adminsAndUser'
 import { anyone } from '../access/anyone'
 import { checkRole } from '../access/checkRole'
-import { loginAfterCreate } from '../hooks/loginAfterCreate'
-import { protectRoles } from '../hooks/protectRoles'
+// import { loginAfterCreate } from '../hooks/loginAfterCreate'
+// import { protectRoles } from '../hooks/protectRoles'
 
 const Users: CollectionConfig = {
   slug: 'users',
-  auth: true,
-  // auth: {
-  //   tokenExpiration: 86400, // 24 hours
-  //   cookies: {
-  //     sameSite: 'none',
-  //     secure: true,
-  //     domain: process.env.COOKIE_DOMAIN,
-  //   },
-  // },
+  // auth: true,
+  auth: {
+    tokenExpiration: 2592000, // 1 month
+    // cookies: {
+    //   sameSite: 'none',
+    //   secure: true,
+    //   domain: process.env.COOKIE_DOMAIN,
+    // },
+  },
   admin: {
-    useAsTitle: 'email',
+    useAsTitle: 'displayName',
   },
   access: {
     read: ()=> true,
@@ -29,11 +29,7 @@ const Users: CollectionConfig = {
   },
   fields: [
     {
-      name: 'firstName',
-      type: 'text',
-    },
-    {
-      name: 'lastName',
+      name: 'displayName',
       type: 'text',
     },
     {

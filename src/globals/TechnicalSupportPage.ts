@@ -1,18 +1,15 @@
 import { GlobalConfig } from "payload/types";
-import BannerBlock from "../blocks/banner";
 import ParagraphBlock from "../blocks/paragraph";
-import ListImagesBlock from "../blocks/listImages";
-import ListContentBlock from "../blocks/listContent";
+import FaqBlock from "../blocks/faq"
 
 const AboutUs: GlobalConfig = {
-  slug: "AboutUs",
+  slug: "TechnicalSupportPage",
   admin: {
     group: "Pages",
   },
   access: {
     read: () => true,
   },
-  label: "About Us Page",
   fields: [
     {
       type: "tabs",
@@ -25,10 +22,8 @@ const AboutUs: GlobalConfig = {
               name: "layout",
               type: "blocks",
               blocks: [
-                BannerBlock,
                 ParagraphBlock,
-                ListImagesBlock,
-                ListContentBlock
+                FaqBlock
               ],
               localized: true,
             },

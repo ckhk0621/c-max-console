@@ -34,6 +34,12 @@ type Query {
   Team(id: String!, draft: Boolean, fallbackLocale: FallbackLocaleInputType, locale: LocaleInputType): Team
   Teams(draft: Boolean, where: Team_where, fallbackLocale: FallbackLocaleInputType, locale: LocaleInputType, limit: Int, page: Int, sort: String): Teams
   docAccessTeam(id: String!): teamsDocAccess
+  Email(id: String!, draft: Boolean, fallbackLocale: FallbackLocaleInputType, locale: LocaleInputType): Email
+  Emails(draft: Boolean, where: Email_where, fallbackLocale: FallbackLocaleInputType, locale: LocaleInputType, limit: Int, page: Int, sort: String): Emails
+  docAccessEmail(id: String!): emailDocAccess
+  Newsletter(id: String!, draft: Boolean, fallbackLocale: FallbackLocaleInputType, locale: LocaleInputType): Newsletter
+  Newsletters(draft: Boolean, where: Newsletter_where, fallbackLocale: FallbackLocaleInputType, locale: LocaleInputType, limit: Int, page: Int, sort: String): Newsletters
+  docAccessNewsletter(id: String!): newsletterDocAccess
   PayloadPreference(id: String!, draft: Boolean, fallbackLocale: FallbackLocaleInputType, locale: LocaleInputType): PayloadPreference
   PayloadPreferences(draft: Boolean, where: PayloadPreference_where, fallbackLocale: FallbackLocaleInputType, locale: LocaleInputType, limit: Int, page: Int, sort: String): PayloadPreferences
   docAccessPayloadPreference(id: String!): payload_preferencesDocAccess
@@ -57,13 +63,15 @@ type Query {
   docAccessTeamsPage: teamsPageDocAccess
   ServicesPage(draft: Boolean, fallbackLocale: FallbackLocaleInputType, locale: LocaleInputType): ServicesPage
   docAccessServicesPage: servicesPageDocAccess
+  TechnicalSupportPage(draft: Boolean, fallbackLocale: FallbackLocaleInputType, locale: LocaleInputType): TechnicalSupportPage
+  docAccessTechnicalSupportPage: TechnicalSupportPageDocAccess
   Access: Access
+  GetCalendar(draft: Boolean, where: Calendar_where, fallbackLocale: FallbackLocaleInputType, locale: LocaleInputType, limit: Int, page: Int, sort: String): Calendars
 }
 
 type User {
   id: String
-  firstName: String
-  lastName: String
+  displayName: String
   roles: [User_roles!]
   updatedAt: DateTime
   createdAt: DateTime
@@ -123,8 +131,7 @@ type Users {
 }
 
 input User_where {
-  firstName: User_firstName_operator
-  lastName: User_lastName_operator
+  displayName: User_displayName_operator
   roles: User_roles_operator
   updatedAt: User_updatedAt_operator
   createdAt: User_createdAt_operator
@@ -134,18 +141,7 @@ input User_where {
   OR: [User_where_or]
 }
 
-input User_firstName_operator {
-  equals: String
-  not_equals: String
-  like: String
-  contains: String
-  in: [String]
-  not_in: [String]
-  all: [String]
-  exists: Boolean
-}
-
-input User_lastName_operator {
+input User_displayName_operator {
   equals: String
   not_equals: String
   like: String
@@ -215,8 +211,7 @@ input User_id_operator {
 }
 
 input User_where_and {
-  firstName: User_firstName_operator
-  lastName: User_lastName_operator
+  displayName: User_displayName_operator
   roles: User_roles_operator
   updatedAt: User_updatedAt_operator
   createdAt: User_createdAt_operator
@@ -227,8 +222,7 @@ input User_where_and {
 }
 
 input User_where_or {
-  firstName: User_firstName_operator
-  lastName: User_lastName_operator
+  displayName: User_displayName_operator
   roles: User_roles_operator
   updatedAt: User_updatedAt_operator
   createdAt: User_createdAt_operator
@@ -248,8 +242,7 @@ type usersDocAccess {
 }
 
 type UsersDocAccessFields {
-  firstName: UsersDocAccessFields_firstName
-  lastName: UsersDocAccessFields_lastName
+  displayName: UsersDocAccessFields_displayName
   roles: UsersDocAccessFields_roles
   updatedAt: UsersDocAccessFields_updatedAt
   createdAt: UsersDocAccessFields_createdAt
@@ -257,49 +250,26 @@ type UsersDocAccessFields {
   password: UsersDocAccessFields_password
 }
 
-type UsersDocAccessFields_firstName {
-  create: UsersDocAccessFields_firstName_Create
-  read: UsersDocAccessFields_firstName_Read
-  update: UsersDocAccessFields_firstName_Update
-  delete: UsersDocAccessFields_firstName_Delete
+type UsersDocAccessFields_displayName {
+  create: UsersDocAccessFields_displayName_Create
+  read: UsersDocAccessFields_displayName_Read
+  update: UsersDocAccessFields_displayName_Update
+  delete: UsersDocAccessFields_displayName_Delete
 }
 
-type UsersDocAccessFields_firstName_Create {
+type UsersDocAccessFields_displayName_Create {
   permission: Boolean!
 }
 
-type UsersDocAccessFields_firstName_Read {
+type UsersDocAccessFields_displayName_Read {
   permission: Boolean!
 }
 
-type UsersDocAccessFields_firstName_Update {
+type UsersDocAccessFields_displayName_Update {
   permission: Boolean!
 }
 
-type UsersDocAccessFields_firstName_Delete {
-  permission: Boolean!
-}
-
-type UsersDocAccessFields_lastName {
-  create: UsersDocAccessFields_lastName_Create
-  read: UsersDocAccessFields_lastName_Read
-  update: UsersDocAccessFields_lastName_Update
-  delete: UsersDocAccessFields_lastName_Delete
-}
-
-type UsersDocAccessFields_lastName_Create {
-  permission: Boolean!
-}
-
-type UsersDocAccessFields_lastName_Read {
-  permission: Boolean!
-}
-
-type UsersDocAccessFields_lastName_Update {
-  permission: Boolean!
-}
-
-type UsersDocAccessFields_lastName_Delete {
+type UsersDocAccessFields_displayName_Delete {
   permission: Boolean!
 }
 
@@ -6368,6 +6338,555 @@ type TeamsDeleteDocAccess {
   where: JSONObject
 }
 
+type Email {
+  id: String
+  fullName: String!
+  countryCode: Email_countryCode
+  phone: String
+  email: String!
+  message: String
+  updatedAt: DateTime
+  createdAt: DateTime
+}
+
+enum Email_countryCode {
+  _852
+  _853
+}
+
+type Emails {
+  docs: [Email]
+  hasNextPage: Boolean
+  hasPrevPage: Boolean
+  limit: Int
+  nextPage: Int
+  offset: Int
+  page: Int
+  pagingCounter: Int
+  prevPage: Int
+  totalDocs: Int
+  totalPages: Int
+}
+
+input Email_where {
+  fullName: Email_fullName_operator
+  countryCode: Email_countryCode_operator
+  phone: Email_phone_operator
+  email: Email_email_operator
+  message: Email_message_operator
+  updatedAt: Email_updatedAt_operator
+  createdAt: Email_createdAt_operator
+  id: Email_id_operator
+  AND: [Email_where_and]
+  OR: [Email_where_or]
+}
+
+input Email_fullName_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  in: [String]
+  not_in: [String]
+  all: [String]
+}
+
+input Email_countryCode_operator {
+  equals: Email_countryCode_Input
+  not_equals: Email_countryCode_Input
+  in: [Email_countryCode_Input]
+  not_in: [Email_countryCode_Input]
+  all: [Email_countryCode_Input]
+  exists: Boolean
+}
+
+enum Email_countryCode_Input {
+  _852
+  _853
+}
+
+input Email_phone_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  in: [String]
+  not_in: [String]
+  all: [String]
+  exists: Boolean
+}
+
+input Email_email_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  in: [String]
+  not_in: [String]
+  all: [String]
+}
+
+input Email_message_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input Email_updatedAt_operator {
+  equals: DateTime
+  not_equals: DateTime
+  greater_than_equal: DateTime
+  greater_than: DateTime
+  less_than_equal: DateTime
+  less_than: DateTime
+  like: DateTime
+  exists: Boolean
+}
+
+input Email_createdAt_operator {
+  equals: DateTime
+  not_equals: DateTime
+  greater_than_equal: DateTime
+  greater_than: DateTime
+  less_than_equal: DateTime
+  less_than: DateTime
+  like: DateTime
+  exists: Boolean
+}
+
+input Email_id_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  in: [String]
+  not_in: [String]
+  all: [String]
+  exists: Boolean
+}
+
+input Email_where_and {
+  fullName: Email_fullName_operator
+  countryCode: Email_countryCode_operator
+  phone: Email_phone_operator
+  email: Email_email_operator
+  message: Email_message_operator
+  updatedAt: Email_updatedAt_operator
+  createdAt: Email_createdAt_operator
+  id: Email_id_operator
+  AND: [Email_where_and]
+  OR: [Email_where_or]
+}
+
+input Email_where_or {
+  fullName: Email_fullName_operator
+  countryCode: Email_countryCode_operator
+  phone: Email_phone_operator
+  email: Email_email_operator
+  message: Email_message_operator
+  updatedAt: Email_updatedAt_operator
+  createdAt: Email_createdAt_operator
+  id: Email_id_operator
+  AND: [Email_where_and]
+  OR: [Email_where_or]
+}
+
+type emailDocAccess {
+  fields: EmailDocAccessFields
+  create: EmailCreateDocAccess
+  read: EmailReadDocAccess
+  update: EmailUpdateDocAccess
+  delete: EmailDeleteDocAccess
+}
+
+type EmailDocAccessFields {
+  fullName: EmailDocAccessFields_fullName
+  countryCode: EmailDocAccessFields_countryCode
+  phone: EmailDocAccessFields_phone
+  email: EmailDocAccessFields_email
+  message: EmailDocAccessFields_message
+  updatedAt: EmailDocAccessFields_updatedAt
+  createdAt: EmailDocAccessFields_createdAt
+}
+
+type EmailDocAccessFields_fullName {
+  create: EmailDocAccessFields_fullName_Create
+  read: EmailDocAccessFields_fullName_Read
+  update: EmailDocAccessFields_fullName_Update
+  delete: EmailDocAccessFields_fullName_Delete
+}
+
+type EmailDocAccessFields_fullName_Create {
+  permission: Boolean!
+}
+
+type EmailDocAccessFields_fullName_Read {
+  permission: Boolean!
+}
+
+type EmailDocAccessFields_fullName_Update {
+  permission: Boolean!
+}
+
+type EmailDocAccessFields_fullName_Delete {
+  permission: Boolean!
+}
+
+type EmailDocAccessFields_countryCode {
+  create: EmailDocAccessFields_countryCode_Create
+  read: EmailDocAccessFields_countryCode_Read
+  update: EmailDocAccessFields_countryCode_Update
+  delete: EmailDocAccessFields_countryCode_Delete
+}
+
+type EmailDocAccessFields_countryCode_Create {
+  permission: Boolean!
+}
+
+type EmailDocAccessFields_countryCode_Read {
+  permission: Boolean!
+}
+
+type EmailDocAccessFields_countryCode_Update {
+  permission: Boolean!
+}
+
+type EmailDocAccessFields_countryCode_Delete {
+  permission: Boolean!
+}
+
+type EmailDocAccessFields_phone {
+  create: EmailDocAccessFields_phone_Create
+  read: EmailDocAccessFields_phone_Read
+  update: EmailDocAccessFields_phone_Update
+  delete: EmailDocAccessFields_phone_Delete
+}
+
+type EmailDocAccessFields_phone_Create {
+  permission: Boolean!
+}
+
+type EmailDocAccessFields_phone_Read {
+  permission: Boolean!
+}
+
+type EmailDocAccessFields_phone_Update {
+  permission: Boolean!
+}
+
+type EmailDocAccessFields_phone_Delete {
+  permission: Boolean!
+}
+
+type EmailDocAccessFields_email {
+  create: EmailDocAccessFields_email_Create
+  read: EmailDocAccessFields_email_Read
+  update: EmailDocAccessFields_email_Update
+  delete: EmailDocAccessFields_email_Delete
+}
+
+type EmailDocAccessFields_email_Create {
+  permission: Boolean!
+}
+
+type EmailDocAccessFields_email_Read {
+  permission: Boolean!
+}
+
+type EmailDocAccessFields_email_Update {
+  permission: Boolean!
+}
+
+type EmailDocAccessFields_email_Delete {
+  permission: Boolean!
+}
+
+type EmailDocAccessFields_message {
+  create: EmailDocAccessFields_message_Create
+  read: EmailDocAccessFields_message_Read
+  update: EmailDocAccessFields_message_Update
+  delete: EmailDocAccessFields_message_Delete
+}
+
+type EmailDocAccessFields_message_Create {
+  permission: Boolean!
+}
+
+type EmailDocAccessFields_message_Read {
+  permission: Boolean!
+}
+
+type EmailDocAccessFields_message_Update {
+  permission: Boolean!
+}
+
+type EmailDocAccessFields_message_Delete {
+  permission: Boolean!
+}
+
+type EmailDocAccessFields_updatedAt {
+  create: EmailDocAccessFields_updatedAt_Create
+  read: EmailDocAccessFields_updatedAt_Read
+  update: EmailDocAccessFields_updatedAt_Update
+  delete: EmailDocAccessFields_updatedAt_Delete
+}
+
+type EmailDocAccessFields_updatedAt_Create {
+  permission: Boolean!
+}
+
+type EmailDocAccessFields_updatedAt_Read {
+  permission: Boolean!
+}
+
+type EmailDocAccessFields_updatedAt_Update {
+  permission: Boolean!
+}
+
+type EmailDocAccessFields_updatedAt_Delete {
+  permission: Boolean!
+}
+
+type EmailDocAccessFields_createdAt {
+  create: EmailDocAccessFields_createdAt_Create
+  read: EmailDocAccessFields_createdAt_Read
+  update: EmailDocAccessFields_createdAt_Update
+  delete: EmailDocAccessFields_createdAt_Delete
+}
+
+type EmailDocAccessFields_createdAt_Create {
+  permission: Boolean!
+}
+
+type EmailDocAccessFields_createdAt_Read {
+  permission: Boolean!
+}
+
+type EmailDocAccessFields_createdAt_Update {
+  permission: Boolean!
+}
+
+type EmailDocAccessFields_createdAt_Delete {
+  permission: Boolean!
+}
+
+type EmailCreateDocAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+type EmailReadDocAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+type EmailUpdateDocAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+type EmailDeleteDocAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+type Newsletter {
+  id: String
+  email: String
+  updatedAt: DateTime
+  createdAt: DateTime
+}
+
+type Newsletters {
+  docs: [Newsletter]
+  hasNextPage: Boolean
+  hasPrevPage: Boolean
+  limit: Int
+  nextPage: Int
+  offset: Int
+  page: Int
+  pagingCounter: Int
+  prevPage: Int
+  totalDocs: Int
+  totalPages: Int
+}
+
+input Newsletter_where {
+  email: Newsletter_email_operator
+  updatedAt: Newsletter_updatedAt_operator
+  createdAt: Newsletter_createdAt_operator
+  id: Newsletter_id_operator
+  AND: [Newsletter_where_and]
+  OR: [Newsletter_where_or]
+}
+
+input Newsletter_email_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  in: [String]
+  not_in: [String]
+  all: [String]
+  exists: Boolean
+}
+
+input Newsletter_updatedAt_operator {
+  equals: DateTime
+  not_equals: DateTime
+  greater_than_equal: DateTime
+  greater_than: DateTime
+  less_than_equal: DateTime
+  less_than: DateTime
+  like: DateTime
+  exists: Boolean
+}
+
+input Newsletter_createdAt_operator {
+  equals: DateTime
+  not_equals: DateTime
+  greater_than_equal: DateTime
+  greater_than: DateTime
+  less_than_equal: DateTime
+  less_than: DateTime
+  like: DateTime
+  exists: Boolean
+}
+
+input Newsletter_id_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  in: [String]
+  not_in: [String]
+  all: [String]
+  exists: Boolean
+}
+
+input Newsletter_where_and {
+  email: Newsletter_email_operator
+  updatedAt: Newsletter_updatedAt_operator
+  createdAt: Newsletter_createdAt_operator
+  id: Newsletter_id_operator
+  AND: [Newsletter_where_and]
+  OR: [Newsletter_where_or]
+}
+
+input Newsletter_where_or {
+  email: Newsletter_email_operator
+  updatedAt: Newsletter_updatedAt_operator
+  createdAt: Newsletter_createdAt_operator
+  id: Newsletter_id_operator
+  AND: [Newsletter_where_and]
+  OR: [Newsletter_where_or]
+}
+
+type newsletterDocAccess {
+  fields: NewsletterDocAccessFields
+  create: NewsletterCreateDocAccess
+  read: NewsletterReadDocAccess
+  update: NewsletterUpdateDocAccess
+  delete: NewsletterDeleteDocAccess
+}
+
+type NewsletterDocAccessFields {
+  email: NewsletterDocAccessFields_email
+  updatedAt: NewsletterDocAccessFields_updatedAt
+  createdAt: NewsletterDocAccessFields_createdAt
+}
+
+type NewsletterDocAccessFields_email {
+  create: NewsletterDocAccessFields_email_Create
+  read: NewsletterDocAccessFields_email_Read
+  update: NewsletterDocAccessFields_email_Update
+  delete: NewsletterDocAccessFields_email_Delete
+}
+
+type NewsletterDocAccessFields_email_Create {
+  permission: Boolean!
+}
+
+type NewsletterDocAccessFields_email_Read {
+  permission: Boolean!
+}
+
+type NewsletterDocAccessFields_email_Update {
+  permission: Boolean!
+}
+
+type NewsletterDocAccessFields_email_Delete {
+  permission: Boolean!
+}
+
+type NewsletterDocAccessFields_updatedAt {
+  create: NewsletterDocAccessFields_updatedAt_Create
+  read: NewsletterDocAccessFields_updatedAt_Read
+  update: NewsletterDocAccessFields_updatedAt_Update
+  delete: NewsletterDocAccessFields_updatedAt_Delete
+}
+
+type NewsletterDocAccessFields_updatedAt_Create {
+  permission: Boolean!
+}
+
+type NewsletterDocAccessFields_updatedAt_Read {
+  permission: Boolean!
+}
+
+type NewsletterDocAccessFields_updatedAt_Update {
+  permission: Boolean!
+}
+
+type NewsletterDocAccessFields_updatedAt_Delete {
+  permission: Boolean!
+}
+
+type NewsletterDocAccessFields_createdAt {
+  create: NewsletterDocAccessFields_createdAt_Create
+  read: NewsletterDocAccessFields_createdAt_Read
+  update: NewsletterDocAccessFields_createdAt_Update
+  delete: NewsletterDocAccessFields_createdAt_Delete
+}
+
+type NewsletterDocAccessFields_createdAt_Create {
+  permission: Boolean!
+}
+
+type NewsletterDocAccessFields_createdAt_Read {
+  permission: Boolean!
+}
+
+type NewsletterDocAccessFields_createdAt_Update {
+  permission: Boolean!
+}
+
+type NewsletterDocAccessFields_createdAt_Delete {
+  permission: Boolean!
+}
+
+type NewsletterCreateDocAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+type NewsletterReadDocAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+type NewsletterUpdateDocAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+type NewsletterDeleteDocAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
 type PayloadPreference {
   id: String
   user(locale: LocaleInputType, fallbackLocale: FallbackLocaleInputType): PayloadPreference_User_Relationship!
@@ -9548,7 +10067,16 @@ type ContactPage {
 
 type ContactPage_Content {
   title: String
+  contentTitle: String
   content(depth: Int): JSON
+  address: [ContactPage_Content_Address!]
+  additionalInfo(depth: Int): JSON
+}
+
+type ContactPage_Content_Address {
+  title: String
+  content(depth: Int): JSON
+  id: String
 }
 
 type ContactPage_Seo {
@@ -9567,7 +10095,10 @@ type contactPageDocAccess {
 
 type ContactPageDocAccessFields {
   title: ContactPageDocAccessFields_title
+  contentTitle: ContactPageDocAccessFields_contentTitle
   content: ContactPageDocAccessFields_content
+  address: ContactPageDocAccessFields_address
+  additionalInfo: ContactPageDocAccessFields_additionalInfo
   displayNewsletter: ContactPageDocAccessFields_displayNewsletter
   updatedAt: ContactPageDocAccessFields_updatedAt
   createdAt: ContactPageDocAccessFields_createdAt
@@ -9596,6 +10127,29 @@ type ContactPageDocAccessFields_title_Delete {
   permission: Boolean!
 }
 
+type ContactPageDocAccessFields_contentTitle {
+  create: ContactPageDocAccessFields_contentTitle_Create
+  read: ContactPageDocAccessFields_contentTitle_Read
+  update: ContactPageDocAccessFields_contentTitle_Update
+  delete: ContactPageDocAccessFields_contentTitle_Delete
+}
+
+type ContactPageDocAccessFields_contentTitle_Create {
+  permission: Boolean!
+}
+
+type ContactPageDocAccessFields_contentTitle_Read {
+  permission: Boolean!
+}
+
+type ContactPageDocAccessFields_contentTitle_Update {
+  permission: Boolean!
+}
+
+type ContactPageDocAccessFields_contentTitle_Delete {
+  permission: Boolean!
+}
+
 type ContactPageDocAccessFields_content {
   create: ContactPageDocAccessFields_content_Create
   read: ContactPageDocAccessFields_content_Read
@@ -9616,6 +10170,128 @@ type ContactPageDocAccessFields_content_Update {
 }
 
 type ContactPageDocAccessFields_content_Delete {
+  permission: Boolean!
+}
+
+type ContactPageDocAccessFields_address {
+  create: ContactPageDocAccessFields_address_Create
+  read: ContactPageDocAccessFields_address_Read
+  update: ContactPageDocAccessFields_address_Update
+  delete: ContactPageDocAccessFields_address_Delete
+  fields: ContactPageDocAccessFields_address_Fields
+}
+
+type ContactPageDocAccessFields_address_Create {
+  permission: Boolean!
+}
+
+type ContactPageDocAccessFields_address_Read {
+  permission: Boolean!
+}
+
+type ContactPageDocAccessFields_address_Update {
+  permission: Boolean!
+}
+
+type ContactPageDocAccessFields_address_Delete {
+  permission: Boolean!
+}
+
+type ContactPageDocAccessFields_address_Fields {
+  title: ContactPageDocAccessFields_address_title
+  content: ContactPageDocAccessFields_address_content
+  id: ContactPageDocAccessFields_address_id
+}
+
+type ContactPageDocAccessFields_address_title {
+  create: ContactPageDocAccessFields_address_title_Create
+  read: ContactPageDocAccessFields_address_title_Read
+  update: ContactPageDocAccessFields_address_title_Update
+  delete: ContactPageDocAccessFields_address_title_Delete
+}
+
+type ContactPageDocAccessFields_address_title_Create {
+  permission: Boolean!
+}
+
+type ContactPageDocAccessFields_address_title_Read {
+  permission: Boolean!
+}
+
+type ContactPageDocAccessFields_address_title_Update {
+  permission: Boolean!
+}
+
+type ContactPageDocAccessFields_address_title_Delete {
+  permission: Boolean!
+}
+
+type ContactPageDocAccessFields_address_content {
+  create: ContactPageDocAccessFields_address_content_Create
+  read: ContactPageDocAccessFields_address_content_Read
+  update: ContactPageDocAccessFields_address_content_Update
+  delete: ContactPageDocAccessFields_address_content_Delete
+}
+
+type ContactPageDocAccessFields_address_content_Create {
+  permission: Boolean!
+}
+
+type ContactPageDocAccessFields_address_content_Read {
+  permission: Boolean!
+}
+
+type ContactPageDocAccessFields_address_content_Update {
+  permission: Boolean!
+}
+
+type ContactPageDocAccessFields_address_content_Delete {
+  permission: Boolean!
+}
+
+type ContactPageDocAccessFields_address_id {
+  create: ContactPageDocAccessFields_address_id_Create
+  read: ContactPageDocAccessFields_address_id_Read
+  update: ContactPageDocAccessFields_address_id_Update
+  delete: ContactPageDocAccessFields_address_id_Delete
+}
+
+type ContactPageDocAccessFields_address_id_Create {
+  permission: Boolean!
+}
+
+type ContactPageDocAccessFields_address_id_Read {
+  permission: Boolean!
+}
+
+type ContactPageDocAccessFields_address_id_Update {
+  permission: Boolean!
+}
+
+type ContactPageDocAccessFields_address_id_Delete {
+  permission: Boolean!
+}
+
+type ContactPageDocAccessFields_additionalInfo {
+  create: ContactPageDocAccessFields_additionalInfo_Create
+  read: ContactPageDocAccessFields_additionalInfo_Read
+  update: ContactPageDocAccessFields_additionalInfo_Update
+  delete: ContactPageDocAccessFields_additionalInfo_Delete
+}
+
+type ContactPageDocAccessFields_additionalInfo_Create {
+  permission: Boolean!
+}
+
+type ContactPageDocAccessFields_additionalInfo_Read {
+  permission: Boolean!
+}
+
+type ContactPageDocAccessFields_additionalInfo_Update {
+  permission: Boolean!
+}
+
+type ContactPageDocAccessFields_additionalInfo_Delete {
   permission: Boolean!
 }
 
@@ -11166,6 +11842,180 @@ type ServicesPageUpdateDocAccess {
   where: JSONObject
 }
 
+type TechnicalSupportPage {
+  content: TechnicalSupportPage_Content
+  seo: TechnicalSupportPage_Seo
+  others: TechnicalSupportPage_Others
+  updatedAt: DateTime
+  createdAt: DateTime
+}
+
+type TechnicalSupportPage_Content {
+  layout: [TechnicalSupportPage_Content_Layout!]
+}
+
+union TechnicalSupportPage_Content_Layout = Paragraph | Faq
+
+type Faq {
+  list: [Faq_List!]
+  id: String
+  blockName: String
+  blockType: String
+}
+
+type Faq_List {
+  question: String
+  answer(depth: Int): JSON
+  id: String
+}
+
+type TechnicalSupportPage_Seo {
+  title: String
+}
+
+type TechnicalSupportPage_Others {
+  displayNewsletter: Boolean
+}
+
+type TechnicalSupportPageDocAccess {
+  fields: TechnicalSupportPageDocAccessFields
+  read: TechnicalSupportPageReadDocAccess
+  update: TechnicalSupportPageUpdateDocAccess
+}
+
+type TechnicalSupportPageDocAccessFields {
+  layout: TechnicalSupportPageDocAccessFields_layout
+  title: TechnicalSupportPageDocAccessFields_title
+  displayNewsletter: TechnicalSupportPageDocAccessFields_displayNewsletter
+  updatedAt: TechnicalSupportPageDocAccessFields_updatedAt
+  createdAt: TechnicalSupportPageDocAccessFields_createdAt
+}
+
+type TechnicalSupportPageDocAccessFields_layout {
+  create: TechnicalSupportPageDocAccessFields_layout_Create
+  read: TechnicalSupportPageDocAccessFields_layout_Read
+  update: TechnicalSupportPageDocAccessFields_layout_Update
+  delete: TechnicalSupportPageDocAccessFields_layout_Delete
+}
+
+type TechnicalSupportPageDocAccessFields_layout_Create {
+  permission: Boolean!
+}
+
+type TechnicalSupportPageDocAccessFields_layout_Read {
+  permission: Boolean!
+}
+
+type TechnicalSupportPageDocAccessFields_layout_Update {
+  permission: Boolean!
+}
+
+type TechnicalSupportPageDocAccessFields_layout_Delete {
+  permission: Boolean!
+}
+
+type TechnicalSupportPageDocAccessFields_title {
+  create: TechnicalSupportPageDocAccessFields_title_Create
+  read: TechnicalSupportPageDocAccessFields_title_Read
+  update: TechnicalSupportPageDocAccessFields_title_Update
+  delete: TechnicalSupportPageDocAccessFields_title_Delete
+}
+
+type TechnicalSupportPageDocAccessFields_title_Create {
+  permission: Boolean!
+}
+
+type TechnicalSupportPageDocAccessFields_title_Read {
+  permission: Boolean!
+}
+
+type TechnicalSupportPageDocAccessFields_title_Update {
+  permission: Boolean!
+}
+
+type TechnicalSupportPageDocAccessFields_title_Delete {
+  permission: Boolean!
+}
+
+type TechnicalSupportPageDocAccessFields_displayNewsletter {
+  create: TechnicalSupportPageDocAccessFields_displayNewsletter_Create
+  read: TechnicalSupportPageDocAccessFields_displayNewsletter_Read
+  update: TechnicalSupportPageDocAccessFields_displayNewsletter_Update
+  delete: TechnicalSupportPageDocAccessFields_displayNewsletter_Delete
+}
+
+type TechnicalSupportPageDocAccessFields_displayNewsletter_Create {
+  permission: Boolean!
+}
+
+type TechnicalSupportPageDocAccessFields_displayNewsletter_Read {
+  permission: Boolean!
+}
+
+type TechnicalSupportPageDocAccessFields_displayNewsletter_Update {
+  permission: Boolean!
+}
+
+type TechnicalSupportPageDocAccessFields_displayNewsletter_Delete {
+  permission: Boolean!
+}
+
+type TechnicalSupportPageDocAccessFields_updatedAt {
+  create: TechnicalSupportPageDocAccessFields_updatedAt_Create
+  read: TechnicalSupportPageDocAccessFields_updatedAt_Read
+  update: TechnicalSupportPageDocAccessFields_updatedAt_Update
+  delete: TechnicalSupportPageDocAccessFields_updatedAt_Delete
+}
+
+type TechnicalSupportPageDocAccessFields_updatedAt_Create {
+  permission: Boolean!
+}
+
+type TechnicalSupportPageDocAccessFields_updatedAt_Read {
+  permission: Boolean!
+}
+
+type TechnicalSupportPageDocAccessFields_updatedAt_Update {
+  permission: Boolean!
+}
+
+type TechnicalSupportPageDocAccessFields_updatedAt_Delete {
+  permission: Boolean!
+}
+
+type TechnicalSupportPageDocAccessFields_createdAt {
+  create: TechnicalSupportPageDocAccessFields_createdAt_Create
+  read: TechnicalSupportPageDocAccessFields_createdAt_Read
+  update: TechnicalSupportPageDocAccessFields_createdAt_Update
+  delete: TechnicalSupportPageDocAccessFields_createdAt_Delete
+}
+
+type TechnicalSupportPageDocAccessFields_createdAt_Create {
+  permission: Boolean!
+}
+
+type TechnicalSupportPageDocAccessFields_createdAt_Read {
+  permission: Boolean!
+}
+
+type TechnicalSupportPageDocAccessFields_createdAt_Update {
+  permission: Boolean!
+}
+
+type TechnicalSupportPageDocAccessFields_createdAt_Delete {
+  permission: Boolean!
+}
+
+type TechnicalSupportPageReadDocAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+type TechnicalSupportPageUpdateDocAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
 type Access {
   canAccessAdmin: Boolean!
   users: usersAccess
@@ -11179,6 +12029,8 @@ type Access {
   calendar: calendarAccess
   files: filesAccess
   teams: teamsAccess
+  email: emailAccess
+  newsletter: newsletterAccess
   payload_preferences: payload_preferencesAccess
   home: homeAccess
   AboutUs: AboutUsAccess
@@ -11190,6 +12042,7 @@ type Access {
   newsPage: newsPageAccess
   teamsPage: teamsPageAccess
   servicesPage: servicesPageAccess
+  TechnicalSupportPage: TechnicalSupportPageAccess
 }
 
 type usersAccess {
@@ -11202,8 +12055,7 @@ type usersAccess {
 }
 
 type UsersFields {
-  firstName: UsersFields_firstName
-  lastName: UsersFields_lastName
+  displayName: UsersFields_displayName
   roles: UsersFields_roles
   updatedAt: UsersFields_updatedAt
   createdAt: UsersFields_createdAt
@@ -11211,49 +12063,26 @@ type UsersFields {
   password: UsersFields_password
 }
 
-type UsersFields_firstName {
-  create: UsersFields_firstName_Create
-  read: UsersFields_firstName_Read
-  update: UsersFields_firstName_Update
-  delete: UsersFields_firstName_Delete
+type UsersFields_displayName {
+  create: UsersFields_displayName_Create
+  read: UsersFields_displayName_Read
+  update: UsersFields_displayName_Update
+  delete: UsersFields_displayName_Delete
 }
 
-type UsersFields_firstName_Create {
+type UsersFields_displayName_Create {
   permission: Boolean!
 }
 
-type UsersFields_firstName_Read {
+type UsersFields_displayName_Read {
   permission: Boolean!
 }
 
-type UsersFields_firstName_Update {
+type UsersFields_displayName_Update {
   permission: Boolean!
 }
 
-type UsersFields_firstName_Delete {
-  permission: Boolean!
-}
-
-type UsersFields_lastName {
-  create: UsersFields_lastName_Create
-  read: UsersFields_lastName_Read
-  update: UsersFields_lastName_Update
-  delete: UsersFields_lastName_Delete
-}
-
-type UsersFields_lastName_Create {
-  permission: Boolean!
-}
-
-type UsersFields_lastName_Read {
-  permission: Boolean!
-}
-
-type UsersFields_lastName_Update {
-  permission: Boolean!
-}
-
-type UsersFields_lastName_Delete {
+type UsersFields_displayName_Delete {
   permission: Boolean!
 }
 
@@ -13903,6 +14732,308 @@ type TeamsDeleteAccess {
   where: JSONObject
 }
 
+type emailAccess {
+  fields: EmailFields
+  create: EmailCreateAccess
+  read: EmailReadAccess
+  update: EmailUpdateAccess
+  delete: EmailDeleteAccess
+}
+
+type EmailFields {
+  fullName: EmailFields_fullName
+  countryCode: EmailFields_countryCode
+  phone: EmailFields_phone
+  email: EmailFields_email
+  message: EmailFields_message
+  updatedAt: EmailFields_updatedAt
+  createdAt: EmailFields_createdAt
+}
+
+type EmailFields_fullName {
+  create: EmailFields_fullName_Create
+  read: EmailFields_fullName_Read
+  update: EmailFields_fullName_Update
+  delete: EmailFields_fullName_Delete
+}
+
+type EmailFields_fullName_Create {
+  permission: Boolean!
+}
+
+type EmailFields_fullName_Read {
+  permission: Boolean!
+}
+
+type EmailFields_fullName_Update {
+  permission: Boolean!
+}
+
+type EmailFields_fullName_Delete {
+  permission: Boolean!
+}
+
+type EmailFields_countryCode {
+  create: EmailFields_countryCode_Create
+  read: EmailFields_countryCode_Read
+  update: EmailFields_countryCode_Update
+  delete: EmailFields_countryCode_Delete
+}
+
+type EmailFields_countryCode_Create {
+  permission: Boolean!
+}
+
+type EmailFields_countryCode_Read {
+  permission: Boolean!
+}
+
+type EmailFields_countryCode_Update {
+  permission: Boolean!
+}
+
+type EmailFields_countryCode_Delete {
+  permission: Boolean!
+}
+
+type EmailFields_phone {
+  create: EmailFields_phone_Create
+  read: EmailFields_phone_Read
+  update: EmailFields_phone_Update
+  delete: EmailFields_phone_Delete
+}
+
+type EmailFields_phone_Create {
+  permission: Boolean!
+}
+
+type EmailFields_phone_Read {
+  permission: Boolean!
+}
+
+type EmailFields_phone_Update {
+  permission: Boolean!
+}
+
+type EmailFields_phone_Delete {
+  permission: Boolean!
+}
+
+type EmailFields_email {
+  create: EmailFields_email_Create
+  read: EmailFields_email_Read
+  update: EmailFields_email_Update
+  delete: EmailFields_email_Delete
+}
+
+type EmailFields_email_Create {
+  permission: Boolean!
+}
+
+type EmailFields_email_Read {
+  permission: Boolean!
+}
+
+type EmailFields_email_Update {
+  permission: Boolean!
+}
+
+type EmailFields_email_Delete {
+  permission: Boolean!
+}
+
+type EmailFields_message {
+  create: EmailFields_message_Create
+  read: EmailFields_message_Read
+  update: EmailFields_message_Update
+  delete: EmailFields_message_Delete
+}
+
+type EmailFields_message_Create {
+  permission: Boolean!
+}
+
+type EmailFields_message_Read {
+  permission: Boolean!
+}
+
+type EmailFields_message_Update {
+  permission: Boolean!
+}
+
+type EmailFields_message_Delete {
+  permission: Boolean!
+}
+
+type EmailFields_updatedAt {
+  create: EmailFields_updatedAt_Create
+  read: EmailFields_updatedAt_Read
+  update: EmailFields_updatedAt_Update
+  delete: EmailFields_updatedAt_Delete
+}
+
+type EmailFields_updatedAt_Create {
+  permission: Boolean!
+}
+
+type EmailFields_updatedAt_Read {
+  permission: Boolean!
+}
+
+type EmailFields_updatedAt_Update {
+  permission: Boolean!
+}
+
+type EmailFields_updatedAt_Delete {
+  permission: Boolean!
+}
+
+type EmailFields_createdAt {
+  create: EmailFields_createdAt_Create
+  read: EmailFields_createdAt_Read
+  update: EmailFields_createdAt_Update
+  delete: EmailFields_createdAt_Delete
+}
+
+type EmailFields_createdAt_Create {
+  permission: Boolean!
+}
+
+type EmailFields_createdAt_Read {
+  permission: Boolean!
+}
+
+type EmailFields_createdAt_Update {
+  permission: Boolean!
+}
+
+type EmailFields_createdAt_Delete {
+  permission: Boolean!
+}
+
+type EmailCreateAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+type EmailReadAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+type EmailUpdateAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+type EmailDeleteAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+type newsletterAccess {
+  fields: NewsletterFields
+  create: NewsletterCreateAccess
+  read: NewsletterReadAccess
+  update: NewsletterUpdateAccess
+  delete: NewsletterDeleteAccess
+}
+
+type NewsletterFields {
+  email: NewsletterFields_email
+  updatedAt: NewsletterFields_updatedAt
+  createdAt: NewsletterFields_createdAt
+}
+
+type NewsletterFields_email {
+  create: NewsletterFields_email_Create
+  read: NewsletterFields_email_Read
+  update: NewsletterFields_email_Update
+  delete: NewsletterFields_email_Delete
+}
+
+type NewsletterFields_email_Create {
+  permission: Boolean!
+}
+
+type NewsletterFields_email_Read {
+  permission: Boolean!
+}
+
+type NewsletterFields_email_Update {
+  permission: Boolean!
+}
+
+type NewsletterFields_email_Delete {
+  permission: Boolean!
+}
+
+type NewsletterFields_updatedAt {
+  create: NewsletterFields_updatedAt_Create
+  read: NewsletterFields_updatedAt_Read
+  update: NewsletterFields_updatedAt_Update
+  delete: NewsletterFields_updatedAt_Delete
+}
+
+type NewsletterFields_updatedAt_Create {
+  permission: Boolean!
+}
+
+type NewsletterFields_updatedAt_Read {
+  permission: Boolean!
+}
+
+type NewsletterFields_updatedAt_Update {
+  permission: Boolean!
+}
+
+type NewsletterFields_updatedAt_Delete {
+  permission: Boolean!
+}
+
+type NewsletterFields_createdAt {
+  create: NewsletterFields_createdAt_Create
+  read: NewsletterFields_createdAt_Read
+  update: NewsletterFields_createdAt_Update
+  delete: NewsletterFields_createdAt_Delete
+}
+
+type NewsletterFields_createdAt_Create {
+  permission: Boolean!
+}
+
+type NewsletterFields_createdAt_Read {
+  permission: Boolean!
+}
+
+type NewsletterFields_createdAt_Update {
+  permission: Boolean!
+}
+
+type NewsletterFields_createdAt_Delete {
+  permission: Boolean!
+}
+
+type NewsletterCreateAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+type NewsletterReadAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+type NewsletterUpdateAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+type NewsletterDeleteAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
 type payload_preferencesAccess {
   fields: PayloadPreferencesFields
   create: PayloadPreferencesCreateAccess
@@ -14757,7 +15888,10 @@ type contactPageAccess {
 
 type ContactPageFields {
   title: ContactPageFields_title
+  contentTitle: ContactPageFields_contentTitle
   content: ContactPageFields_content
+  address: ContactPageFields_address
+  additionalInfo: ContactPageFields_additionalInfo
   displayNewsletter: ContactPageFields_displayNewsletter
   updatedAt: ContactPageFields_updatedAt
   createdAt: ContactPageFields_createdAt
@@ -14786,6 +15920,29 @@ type ContactPageFields_title_Delete {
   permission: Boolean!
 }
 
+type ContactPageFields_contentTitle {
+  create: ContactPageFields_contentTitle_Create
+  read: ContactPageFields_contentTitle_Read
+  update: ContactPageFields_contentTitle_Update
+  delete: ContactPageFields_contentTitle_Delete
+}
+
+type ContactPageFields_contentTitle_Create {
+  permission: Boolean!
+}
+
+type ContactPageFields_contentTitle_Read {
+  permission: Boolean!
+}
+
+type ContactPageFields_contentTitle_Update {
+  permission: Boolean!
+}
+
+type ContactPageFields_contentTitle_Delete {
+  permission: Boolean!
+}
+
 type ContactPageFields_content {
   create: ContactPageFields_content_Create
   read: ContactPageFields_content_Read
@@ -14806,6 +15963,128 @@ type ContactPageFields_content_Update {
 }
 
 type ContactPageFields_content_Delete {
+  permission: Boolean!
+}
+
+type ContactPageFields_address {
+  create: ContactPageFields_address_Create
+  read: ContactPageFields_address_Read
+  update: ContactPageFields_address_Update
+  delete: ContactPageFields_address_Delete
+  fields: ContactPageFields_address_Fields
+}
+
+type ContactPageFields_address_Create {
+  permission: Boolean!
+}
+
+type ContactPageFields_address_Read {
+  permission: Boolean!
+}
+
+type ContactPageFields_address_Update {
+  permission: Boolean!
+}
+
+type ContactPageFields_address_Delete {
+  permission: Boolean!
+}
+
+type ContactPageFields_address_Fields {
+  title: ContactPageFields_address_title
+  content: ContactPageFields_address_content
+  id: ContactPageFields_address_id
+}
+
+type ContactPageFields_address_title {
+  create: ContactPageFields_address_title_Create
+  read: ContactPageFields_address_title_Read
+  update: ContactPageFields_address_title_Update
+  delete: ContactPageFields_address_title_Delete
+}
+
+type ContactPageFields_address_title_Create {
+  permission: Boolean!
+}
+
+type ContactPageFields_address_title_Read {
+  permission: Boolean!
+}
+
+type ContactPageFields_address_title_Update {
+  permission: Boolean!
+}
+
+type ContactPageFields_address_title_Delete {
+  permission: Boolean!
+}
+
+type ContactPageFields_address_content {
+  create: ContactPageFields_address_content_Create
+  read: ContactPageFields_address_content_Read
+  update: ContactPageFields_address_content_Update
+  delete: ContactPageFields_address_content_Delete
+}
+
+type ContactPageFields_address_content_Create {
+  permission: Boolean!
+}
+
+type ContactPageFields_address_content_Read {
+  permission: Boolean!
+}
+
+type ContactPageFields_address_content_Update {
+  permission: Boolean!
+}
+
+type ContactPageFields_address_content_Delete {
+  permission: Boolean!
+}
+
+type ContactPageFields_address_id {
+  create: ContactPageFields_address_id_Create
+  read: ContactPageFields_address_id_Read
+  update: ContactPageFields_address_id_Update
+  delete: ContactPageFields_address_id_Delete
+}
+
+type ContactPageFields_address_id_Create {
+  permission: Boolean!
+}
+
+type ContactPageFields_address_id_Read {
+  permission: Boolean!
+}
+
+type ContactPageFields_address_id_Update {
+  permission: Boolean!
+}
+
+type ContactPageFields_address_id_Delete {
+  permission: Boolean!
+}
+
+type ContactPageFields_additionalInfo {
+  create: ContactPageFields_additionalInfo_Create
+  read: ContactPageFields_additionalInfo_Read
+  update: ContactPageFields_additionalInfo_Update
+  delete: ContactPageFields_additionalInfo_Delete
+}
+
+type ContactPageFields_additionalInfo_Create {
+  permission: Boolean!
+}
+
+type ContactPageFields_additionalInfo_Read {
+  permission: Boolean!
+}
+
+type ContactPageFields_additionalInfo_Update {
+  permission: Boolean!
+}
+
+type ContactPageFields_additionalInfo_Delete {
   permission: Boolean!
 }
 
@@ -15908,6 +17187,145 @@ type ServicesPageUpdateAccess {
   where: JSONObject
 }
 
+type TechnicalSupportPageAccess {
+  fields: TechnicalSupportPageFields
+  read: TechnicalSupportPageReadAccess
+  update: TechnicalSupportPageUpdateAccess
+}
+
+type TechnicalSupportPageFields {
+  layout: TechnicalSupportPageFields_layout
+  title: TechnicalSupportPageFields_title
+  displayNewsletter: TechnicalSupportPageFields_displayNewsletter
+  updatedAt: TechnicalSupportPageFields_updatedAt
+  createdAt: TechnicalSupportPageFields_createdAt
+}
+
+type TechnicalSupportPageFields_layout {
+  create: TechnicalSupportPageFields_layout_Create
+  read: TechnicalSupportPageFields_layout_Read
+  update: TechnicalSupportPageFields_layout_Update
+  delete: TechnicalSupportPageFields_layout_Delete
+}
+
+type TechnicalSupportPageFields_layout_Create {
+  permission: Boolean!
+}
+
+type TechnicalSupportPageFields_layout_Read {
+  permission: Boolean!
+}
+
+type TechnicalSupportPageFields_layout_Update {
+  permission: Boolean!
+}
+
+type TechnicalSupportPageFields_layout_Delete {
+  permission: Boolean!
+}
+
+type TechnicalSupportPageFields_title {
+  create: TechnicalSupportPageFields_title_Create
+  read: TechnicalSupportPageFields_title_Read
+  update: TechnicalSupportPageFields_title_Update
+  delete: TechnicalSupportPageFields_title_Delete
+}
+
+type TechnicalSupportPageFields_title_Create {
+  permission: Boolean!
+}
+
+type TechnicalSupportPageFields_title_Read {
+  permission: Boolean!
+}
+
+type TechnicalSupportPageFields_title_Update {
+  permission: Boolean!
+}
+
+type TechnicalSupportPageFields_title_Delete {
+  permission: Boolean!
+}
+
+type TechnicalSupportPageFields_displayNewsletter {
+  create: TechnicalSupportPageFields_displayNewsletter_Create
+  read: TechnicalSupportPageFields_displayNewsletter_Read
+  update: TechnicalSupportPageFields_displayNewsletter_Update
+  delete: TechnicalSupportPageFields_displayNewsletter_Delete
+}
+
+type TechnicalSupportPageFields_displayNewsletter_Create {
+  permission: Boolean!
+}
+
+type TechnicalSupportPageFields_displayNewsletter_Read {
+  permission: Boolean!
+}
+
+type TechnicalSupportPageFields_displayNewsletter_Update {
+  permission: Boolean!
+}
+
+type TechnicalSupportPageFields_displayNewsletter_Delete {
+  permission: Boolean!
+}
+
+type TechnicalSupportPageFields_updatedAt {
+  create: TechnicalSupportPageFields_updatedAt_Create
+  read: TechnicalSupportPageFields_updatedAt_Read
+  update: TechnicalSupportPageFields_updatedAt_Update
+  delete: TechnicalSupportPageFields_updatedAt_Delete
+}
+
+type TechnicalSupportPageFields_updatedAt_Create {
+  permission: Boolean!
+}
+
+type TechnicalSupportPageFields_updatedAt_Read {
+  permission: Boolean!
+}
+
+type TechnicalSupportPageFields_updatedAt_Update {
+  permission: Boolean!
+}
+
+type TechnicalSupportPageFields_updatedAt_Delete {
+  permission: Boolean!
+}
+
+type TechnicalSupportPageFields_createdAt {
+  create: TechnicalSupportPageFields_createdAt_Create
+  read: TechnicalSupportPageFields_createdAt_Read
+  update: TechnicalSupportPageFields_createdAt_Update
+  delete: TechnicalSupportPageFields_createdAt_Delete
+}
+
+type TechnicalSupportPageFields_createdAt_Create {
+  permission: Boolean!
+}
+
+type TechnicalSupportPageFields_createdAt_Read {
+  permission: Boolean!
+}
+
+type TechnicalSupportPageFields_createdAt_Update {
+  permission: Boolean!
+}
+
+type TechnicalSupportPageFields_createdAt_Delete {
+  permission: Boolean!
+}
+
+type TechnicalSupportPageReadAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+type TechnicalSupportPageUpdateAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
 type Mutation {
   createUser(data: mutationUserInput!, draft: Boolean, locale: LocaleInputType): User
   updateUser(id: String!, autosave: Boolean, data: mutationUserUpdateInput!, draft: Boolean, locale: LocaleInputType): User
@@ -15949,6 +17367,12 @@ type Mutation {
   createTeam(data: mutationTeamInput!, draft: Boolean, locale: LocaleInputType): Team
   updateTeam(id: String!, autosave: Boolean, data: mutationTeamUpdateInput!, draft: Boolean, locale: LocaleInputType): Team
   deleteTeam(id: String!): Team
+  createEmail(data: mutationEmailInput!, draft: Boolean, locale: LocaleInputType): Email
+  updateEmail(id: String!, autosave: Boolean, data: mutationEmailUpdateInput!, draft: Boolean, locale: LocaleInputType): Email
+  deleteEmail(id: String!): Email
+  createNewsletter(data: mutationNewsletterInput!, draft: Boolean, locale: LocaleInputType): Newsletter
+  updateNewsletter(id: String!, autosave: Boolean, data: mutationNewsletterUpdateInput!, draft: Boolean, locale: LocaleInputType): Newsletter
+  deleteNewsletter(id: String!): Newsletter
   createPayloadPreference(data: mutationPayloadPreferenceInput!, draft: Boolean, locale: LocaleInputType): PayloadPreference
   updatePayloadPreference(id: String!, autosave: Boolean, data: mutationPayloadPreferenceUpdateInput!, draft: Boolean, locale: LocaleInputType): PayloadPreference
   deletePayloadPreference(id: String!): PayloadPreference
@@ -15962,11 +17386,12 @@ type Mutation {
   updateNewsPage(data: mutationNewsPageInput!, draft: Boolean, locale: LocaleInputType): NewsPage
   updateTeamsPage(data: mutationTeamsPageInput!, draft: Boolean, locale: LocaleInputType): TeamsPage
   updateServicesPage(data: mutationServicesPageInput!, draft: Boolean, locale: LocaleInputType): ServicesPage
+  updateTechnicalSupportPage(data: mutationTechnicalSupportPageInput!, draft: Boolean, locale: LocaleInputType): TechnicalSupportPage
+  Subscription(email: String): String
 }
 
 input mutationUserInput {
-  firstName: String
-  lastName: String
+  displayName: String
   roles: [User_roles_MutationInput]
   updatedAt: String
   createdAt: String
@@ -15987,8 +17412,7 @@ enum User_roles_MutationInput {
 }
 
 input mutationUserUpdateInput {
-  firstName: String
-  lastName: String
+  displayName: String
   roles: [UserUpdate_roles_MutationInput]
   updatedAt: String
   createdAt: String
@@ -16349,6 +17773,48 @@ input mutationTeamUpdateInput {
   createdAt: String
 }
 
+input mutationEmailInput {
+  fullName: String!
+  countryCode: Email_countryCode_MutationInput
+  phone: String
+  email: String!
+  message: String
+  updatedAt: String
+  createdAt: String
+}
+
+enum Email_countryCode_MutationInput {
+  _852
+  _853
+}
+
+input mutationEmailUpdateInput {
+  fullName: String
+  countryCode: EmailUpdate_countryCode_MutationInput
+  phone: String
+  email: String
+  message: String
+  updatedAt: String
+  createdAt: String
+}
+
+enum EmailUpdate_countryCode_MutationInput {
+  _852
+  _853
+}
+
+input mutationNewsletterInput {
+  email: String
+  updatedAt: String
+  createdAt: String
+}
+
+input mutationNewsletterUpdateInput {
+  email: String
+  updatedAt: String
+  createdAt: String
+}
+
 input mutationPayloadPreferenceInput {
   user: PayloadPreference_UserRelationshipInput
   key: String
@@ -16495,7 +17961,16 @@ input mutationContactPageInput {
 
 input mutationContactPage_ContentInput {
   title: String
+  contentTitle: String
   content: JSON
+  address: [mutationContactPage_Content_AddressInput]
+  additionalInfo: JSON
+}
+
+input mutationContactPage_Content_AddressInput {
+  title: String
+  content: JSON
+  id: String
 }
 
 input mutationContactPage_SeoInput {
@@ -16623,5 +18098,25 @@ input mutationServicesPage_SeoInput {
 }
 
 input mutationServicesPage_OthersInput {
+  displayNewsletter: Boolean
+}
+
+input mutationTechnicalSupportPageInput {
+  content: mutationTechnicalSupportPage_ContentInput
+  seo: mutationTechnicalSupportPage_SeoInput
+  others: mutationTechnicalSupportPage_OthersInput
+  updatedAt: String
+  createdAt: String
+}
+
+input mutationTechnicalSupportPage_ContentInput {
+  layout: JSON
+}
+
+input mutationTechnicalSupportPage_SeoInput {
+  title: String
+}
+
+input mutationTechnicalSupportPage_OthersInput {
   displayNewsletter: Boolean
 }

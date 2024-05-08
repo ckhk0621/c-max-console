@@ -19,6 +19,8 @@ export interface Config {
     calendar: Calendar;
     files: File;
     teams: Team;
+    email: Email;
+    newsletter: Newsletter;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
@@ -33,6 +35,7 @@ export interface Config {
     newsPage: NewsPage;
     teamsPage: TeamsPage;
     servicesPage: ServicesPage;
+    TechnicalSupportPage: TechnicalSupportPage;
   };
 }
 /**
@@ -41,8 +44,7 @@ export interface Config {
  */
 export interface User {
   id: string;
-  firstName?: string | null;
-  lastName?: string | null;
+  displayName?: string | null;
   roles?: ('admin' | 'user' | 'staff')[] | null;
   updatedAt: string;
   createdAt: string;
@@ -238,6 +240,30 @@ export interface Team {
         [k: string]: unknown;
       }[]
     | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "email".
+ */
+export interface Email {
+  id: string;
+  fullName: string;
+  countryCode?: ('852' | '853') | null;
+  phone?: string | null;
+  email: string;
+  message?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "newsletter".
+ */
+export interface Newsletter {
+  id: string;
+  email?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -599,7 +625,24 @@ export interface ContactPage {
   id: string;
   content: {
     title?: string | null;
+    contentTitle?: string | null;
     content?:
+      | {
+          [k: string]: unknown;
+        }[]
+      | null;
+    address?:
+      | {
+          title?: string | null;
+          content?:
+            | {
+                [k: string]: unknown;
+              }[]
+            | null;
+          id?: string | null;
+        }[]
+      | null;
+    additionalInfo?:
       | {
           [k: string]: unknown;
         }[]
@@ -777,6 +820,54 @@ export interface ServicesPage {
               id?: string | null;
               blockName?: string | null;
               blockType: 'twoColumnContent';
+            }
+        )[]
+      | null;
+  };
+  seo: {
+    title?: string | null;
+  };
+  others: {
+    displayNewsletter?: boolean | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TechnicalSupportPage".
+ */
+export interface TechnicalSupportPage {
+  id: string;
+  content: {
+    layout?:
+      | (
+          | {
+              title?: string | null;
+              content?:
+                | {
+                    [k: string]: unknown;
+                  }[]
+                | null;
+              id?: string | null;
+              blockName?: string | null;
+              blockType: 'paragraph';
+            }
+          | {
+              list?:
+                | {
+                    question?: string | null;
+                    answer?:
+                      | {
+                          [k: string]: unknown;
+                        }[]
+                      | null;
+                    id?: string | null;
+                  }[]
+                | null;
+              id?: string | null;
+              blockName?: string | null;
+              blockType: 'faq';
             }
         )[]
       | null;

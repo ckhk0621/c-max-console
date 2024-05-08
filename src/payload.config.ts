@@ -14,9 +14,11 @@ import Blocks from './collections/Blocks'
 import Products from './collections/Products'
 import Solutions from './collections/Solutions'
 import News from './collections/News'
-import Calendar from './collections/Calendar'
+import Calendar, { calendarCustomGraphQL} from './collections/Calendar'
 import Files from './collections/Files'
 import Teams from './collections/Teams'
+import Email from './collections/crm/Email'
+import NewsLetter, {newsletterCustomGraphQL} from './collections/crm/Newsletter'
 
 import Settings from './globals/Settings';
 import Home from './globals/Home';
@@ -28,6 +30,7 @@ import ShowcasePage from './globals/ShowcasePage'
 import NewsPage from './globals/NewsPage'
 import TeamsPage from './globals/TeamsPage'
 import ServicesPage from './globals/ServicesPage'
+import TechnicalSupportPage from './globals/TechnicalSupportPage'
 import AfterLogin from "./components/AfterLogin";
 import { cloudStorage } from '@payloadcms/plugin-cloud-storage';
 import { s3Adapter } from '@payloadcms/plugin-cloud-storage/s3';
@@ -41,7 +44,7 @@ export default buildConfig({
     bundler: webpackBundler(),
   },
   editor: slateEditor({}),
-  collections: [Users, Categories, Media, Pages, Products, Solutions, News, Blocks, Calendar, Files, Teams],
+  collections: [Users, Categories, Media, Pages, Products, Solutions, News, Blocks, Calendar, Files, Teams, Email, NewsLetter],
   globals: [
     Home,
     AboutUs,
@@ -52,7 +55,8 @@ export default buildConfig({
     Settings,
     NewsPage,
     TeamsPage,
-    ServicesPage
+    ServicesPage,
+    TechnicalSupportPage
   ],
   typescript: {
     outputFile: path.resolve(__dirname, 'payload-types.ts'),
@@ -60,7 +64,10 @@ export default buildConfig({
   },
   graphQL: {
     schemaOutputFile: path.resolve(__dirname, 'generated-schema.graphql'),
-    ...[].reduce((_, { mutations, queries }) => {
+    ...[
+      calendarCustomGraphQL,
+      newsletterCustomGraphQL
+    ].reduce((_, { mutations, queries }) => {
       return {
         mutations: (graphQL, payload) => {
           return {
@@ -84,7 +91,6 @@ export default buildConfig({
           adapter: s3Adapter({
             bucket: process.env.S3_BUCKET_NAME,
             config: {
-              // endpoint: "https://c-max-bucket.s3.ap-east-1.amazonaws.com",
               credentials: {
                 accessKeyId: process.env.S3_ACCESS_KEY,
                 secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
@@ -92,7 +98,18 @@ export default buildConfig({
               region: "ap-east-1",
             },
           }),
-          // disablePayloadAccessControl: true,
+        },
+        files: {
+          adapter: s3Adapter({
+            bucket: process.env.S3_BUCKET_NAME,
+            config: {
+              credentials: {
+                accessKeyId: process.env.S3_ACCESS_KEY,
+                secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
+              },
+              region: "ap-east-1",
+            },
+          }),
         },
       },
     })
