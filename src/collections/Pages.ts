@@ -20,6 +20,9 @@ const Pages: CollectionConfig = {
         name: "slug",
         type: "text",
         required: true,
+        admin: {
+          readOnly: true,
+        }
       },
   ],
 };

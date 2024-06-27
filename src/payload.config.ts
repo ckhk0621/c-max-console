@@ -16,6 +16,7 @@ import Solutions from './collections/Solutions'
 import News from './collections/News'
 import Calendar, { calendarCustomGraphQL} from './collections/Calendar'
 import Files from './collections/Files'
+// import CloudFlareR2 from './collections/CloudFlareR2';
 import Teams from './collections/Teams'
 import Email from './collections/crm/Email'
 import NewsLetter, {newsletterCustomGraphQL} from './collections/crm/Newsletter'
@@ -111,6 +112,19 @@ export default buildConfig({
             },
           }),
         },
+        // cloudFlareR2:{
+        //   adapter: s3Adapter({
+        //     bucket: process.env.S3_BUCKET_NAME || "",
+        //     config: {
+        //       endpoint: process.env.R2_ENDPOINT || undefined,
+        //       credentials: {
+        //         accessKeyId: process.env.R2_ACCESS_KEY || "",
+        //         secretAccessKey:  process.env.R2_SECRET_ACCESS_KEY || "",
+        //       },
+        //       region: "auto",
+        //     },
+        //   }),
+        // }
       },
     })
   ],
@@ -132,3 +146,5 @@ export default buildConfig({
   },
   
 })
+
+// rwlU7XqSnTqebpVszztn_r5gwsewSZWdbR7DEuxH
